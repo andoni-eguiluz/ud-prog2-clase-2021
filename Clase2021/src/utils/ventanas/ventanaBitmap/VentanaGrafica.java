@@ -23,7 +23,7 @@ public class VentanaGrafica {
 
 	private static VentanaGrafica v;
 	/** Método main de prueba de la clase
-	 * @param args	No utilizado
+	 * @param args	No utilizado 
 	 */
 	public static void main(String[] args) {
 		v = new VentanaGrafica( 800, 600, "Test Ventana Gráfica" );
