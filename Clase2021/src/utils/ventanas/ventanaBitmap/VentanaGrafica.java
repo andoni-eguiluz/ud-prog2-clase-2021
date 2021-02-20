@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.*;
 
 /** Clase ventana sencilla para dibujado directo a la ventana
+ * v 1.2 - Incorpora posibilidad de cambio de zoom y offset (desplamiento) de origen
  * v 1.1.6 - Incorpora método para dibujar texto centrado
  * v 1.1.5 - Incorpora método para cambiar el tipo de letra de la línea de mensajes, método para consultar el mensaje actual
  * v 1.1.4 - Incorpora métodos para pedir datos desde teclado
@@ -31,12 +32,13 @@ public class VentanaGrafica {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				v.setDibujadoInmediato( !v.isDibujadoInmediato() );
+				v.setMensaje( "Dibujado inmediato está " + (v.isDibujadoInmediato() ? "ACTIVADO" : "DESACTIVADO") );
 			}
 		});
 		v.setDibujadoInmediato( false );
 		Object opcion = JOptionPane.showInputDialog( v.getJFrame(), "¿Qué quieres probar?",
 				"Selección de test", JOptionPane.QUESTION_MESSAGE, null, 
-				new String[] { "Movimiento", "Giros", "Tiro", "Texto" }, "Movimiento" );
+				new String[] { "Movimiento", "Giros", "Tiro", "Texto", "Zoom" }, "Movimiento" );
 		if ( "Movimiento".equals( opcion ) ) {
 			movimiento();
 		} else if ( "Giros".equals( opcion ) ) {
@@ -45,6 +47,8 @@ public class VentanaGrafica {
 			tiro();
 		} else if ( "Texto".equals( opcion ) ) {
 			texto();
+		} else if ( "Zoom".equals( opcion ) ) {
+			zoom();
 		}
 	}
 
@@ -148,6 +152,104 @@ public class VentanaGrafica {
 		v.espera( 5000 );
 		v.acaba();
 	}		
+	
+	// Prueba 5: zoom y movimiento de referencia de la ventana
+	private static void zoom() {
+		boolean sigue = true;
+		int offset = 0;
+		double zoom = 1.0;
+		boolean bajando = true;
+		while (sigue) {
+			dibujoEjemplo( false );
+			while (v.isControlPulsado()) v.espera(10);  // Con Ctrl se pausa la animación
+			v.espera( 10 );
+			if (offset<200) {  // Amplía el offset hasta 200,200
+				offset += 4;
+				v.setOffsetDibujo( new Point( offset, offset ) );
+			} else if (bajando) {
+				zoom *= 0.99; // Va bajando el zoom
+				v.setEscalaDibujo( zoom );
+				if (zoom < 0.5) {  // A partir de 0.5 empieza a subir
+					bajando = false; 
+				}
+			}
+			if (!bajando) {
+				zoom *= 1.01; // Va subiendo el zoom
+				v.setEscalaDibujo( zoom );
+				if (zoom > 3.0) {  // Al llegar a 3 se para el programa
+					sigue = false;
+				}
+			}
+			v.setMensaje( "Offset " + offset + " - zoom " + zoom );
+		}
+		while (!v.estaCerrada()) {
+			dibujoEjemplo( true );
+			Point antMouse = null;
+			Point mouse = v.getRatonPulsado();
+			Point origen = mouse;
+			boolean clickEnOrigen = false;
+			if (origen!=null) {
+				Point2D.Double puntoClick = v.getPuntoEnEscala( origen );
+				if (Math.abs(puntoClick.x)*v.getEscalaDibujo()<5 && Math.abs(puntoClick.y)*v.getEscalaDibujo()<5) {
+					clickEnOrigen = true;
+				}
+			}
+			boolean soloClick = true;
+			while (mouse!=null) {
+				if (clickEnOrigen) {
+					int distX = mouse.x-origen.x; // Solo se considera el drag en la x (derecha crecer, izquierda decrecer)
+					double incZoom;
+					if (distX>=0) {
+						incZoom = 1.0 + distX/100.0;  // 100 pixels a la derecha duplica
+					} else {
+						incZoom = 1.0 + distX/500.0;  // 500 pixels a la derecha minimiza al máximo
+					}
+					double nuevoZoom = zoom * incZoom;
+					if (nuevoZoom < 0.01) nuevoZoom = 0.01;  // Mínimo zoom
+					v.setEscalaDibujo( nuevoZoom );
+					dibujoEjemplo( true );
+					v.setMensaje( "Zoom = " + nuevoZoom );
+				} else if (antMouse!=null) {
+					v.setOffsetDibujo( mouse.x-antMouse.x, mouse.y-antMouse.y );
+					dibujoEjemplo( true );
+				}
+				v.espera( 10 );
+				antMouse = mouse;
+				mouse = v.getRatonPulsado();
+				if (mouse!=null && !antMouse.equals(mouse)) soloClick = false;
+			}
+			zoom = v.getEscalaDibujo();
+			if (soloClick && origen!=null) {
+				String mens = String.format( "  (click en punto anterior (%4.2f,%4.2f)", v.getPuntoEnEscala(origen).x, v.getPuntoEnEscala(origen).y );
+				int xOffset = v.getOffsetDibujo().x;
+				int yOffset = v.getOffsetDibujo().y;
+				v.setEjeYInvertido( !v.getEjeYInvertido() );
+				v.setOffsetDibujo( new Point( xOffset, v.getAltura() - yOffset ) );
+				v.setMensaje( "Eje Y invertido = " + (v.getEjeYInvertido() ? "SI" : "NO" ) + mens + ", nuevo " + String.format( "(%4.2f,%4.2f)", v.getPuntoEnEscala(origen).x, v.getPuntoEnEscala(origen).y ) + ")");
+				dibujoEjemplo( true );
+			}
+			v.espera( 10 );
+		}
+		v.espera( 5000 );
+		v.acaba();
+	}
+		private static void dibujoEjemplo( boolean conMensaje ) {
+			v.borra();
+			v.dibujaEjes( 100, Color.BLACK, 1.0f );
+			v.dibujaLinea( -100, 50, 800, 50, 0.5f, Color.CYAN );
+			v.dibujaTexto( 100, 50, "texto dibujado", new Font( "Arial", Font.PLAIN, 16 ), Color.black );
+			v.dibujaRect( 100, 100, 200, 50, 0.5f, Color.ORANGE );
+			v.dibujaTextoCentrado( 100, 100, 200, 50, "texto centrado entre 100 y 300", new Font( "Arial", Font.PLAIN, 16 ), Color.green, true );
+			v.dibujaImagen( "img/UD-green.png", 400, 150, 1.0, Math.PI/6.0, 0.4f );
+			v.dibujaCirculo( 400, 150, 100.0, 1.0f, Color.BLACK );
+			v.dibujaFlecha( 100, 350, 300, 550, 2.0f, Color.MAGENTA, 10 );
+			v.dibujaCirculo( 400, 350, 50.0, 2.0f, Color.BLUE, Color.YELLOW );
+			v.dibujaPoligono( 3.0f, Color.GREEN, true, new Point( 100, 400 ), new Point( 400, 410 ), new Point( 380, 440 ), new Point( 110, 450 ) );
+			v.dibujaRect( 550, 350, 120,  60,  2.0f, Color.MAGENTA, Color.CYAN );
+			if (conMensaje) v.dibujaTexto( 10, -20, "Drag para desplazar, drag sobre origen para zoom, Click inversión eje Y", new Font( "Arial", Font.PLAIN, 16 ), Color.RED );
+			v.repaint();
+		}
+
 		
 	// Parte estática de datos comunes 
 	// Métodos estáticos
@@ -196,8 +298,11 @@ public class VentanaGrafica {
 	private Point pointMoved;       // Coordenada pasada de ratón (si existe)
 	private Point pointMovedPrev;   // Coordenada pasada anterior de ratón (si existe)
 	private boolean dibujadoInmediato = true; // Refresco de dibujado en cada orden de dibujado
+	private Point offsetInicio = new Point( 0, 0 );  // Offset de inicio de coordenadas ((0,0) por defecto)
+	private double escalaDibujo = 1.0;               // Escala de dibujado (1=1 píxeles por defecto)
+	private boolean ejeYInvertido = true;            // Eje Y invertido con respecto a la representación matemática clásica (por defecto true -crece hacia abajo-)
 
-		private Object lock = new Object();  // Tema de sincronización de hilos para el acceso como si no los hubiera
+		private Object lock = new Object();  // Tema de sincronización de hilos para que el programador usuario no necesite usarlos
 	
 	/** Construye una nueva ventana gráfica con fondo blanco y la visualiza en el centro de la pantalla
 	 * @param anchura	Anchura en píxels (valor positivo) de la zona de pintado
@@ -441,10 +546,22 @@ public class VentanaGrafica {
 	public void dibujaRect( double x, double y, double anchura, double altura, float grosor, Color color ) {
 		graphics.setColor( color );
 		graphics.setStroke( new BasicStroke( grosor ));
-		graphics.drawRect( (int)Math.round(x), (int)Math.round(y), (int)Math.round(anchura), (int)Math.round(altura) );
+		if (ejeYInvertido)
+			graphics.drawRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y)), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
+		else
+			graphics.drawRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y))-(int)Math.round(altura*escalaDibujo), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
 		if (dibujadoInmediato) repaint();
 	}
-	
+
+		// Convierte x de coordenadas propuestas a coordenadas visuales (con zoom y desplazamiento)
+		private double calcX( double x ) {
+			return offsetInicio.x + x * escalaDibujo;
+		}
+		// Convierte y de coordenadas propuestas a coordenadas visuales (con zoom y desplazamiento)
+		private double calcY( double y ) {
+			return offsetInicio.y + (ejeYInvertido?1.0:-1.0) * y * escalaDibujo;
+		}
+
 	/** Dibuja un rectángulo relleno en la ventana
 	 * @param x	Coordenada x de la esquina superior izquierda del rectángulo
 	 * @param y	Coordenada y de la esquina superior izquierda del rectángulo
@@ -457,9 +574,15 @@ public class VentanaGrafica {
 	public void dibujaRect( double x, double y, double anchura, double altura, float grosor, Color color, Color colorRell ) {
 		graphics.setColor( colorRell );
 		graphics.setStroke( new BasicStroke( grosor ));
-		graphics.fillRect( (int)Math.round(x), (int)Math.round(y), (int)Math.round(anchura), (int)Math.round(altura) );
+		if (ejeYInvertido)
+			graphics.fillRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y)), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
+		else
+			graphics.fillRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y))-(int)Math.round(altura*escalaDibujo), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
 		graphics.setColor( color );
-		graphics.drawRect( (int)Math.round(x), (int)Math.round(y), (int)Math.round(anchura), (int)Math.round(altura) );
+		if (ejeYInvertido)
+			graphics.drawRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y)), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
+		else
+			graphics.drawRect( (int)Math.round(calcX(x)), (int)Math.round(calcY(y))-(int)Math.round(altura*escalaDibujo), (int)Math.round(anchura*escalaDibujo), (int)Math.round(altura*escalaDibujo) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -496,9 +619,9 @@ public class VentanaGrafica {
 	public void dibujaCirculo( double x, double y, double radio, float grosor, Color color, Color colorRelleno ) {
 		graphics.setStroke( new BasicStroke( grosor ));
 		graphics.setColor( colorRelleno );
-		graphics.fillOval( (int)Math.round(x-radio), (int)Math.round(y-radio), (int)Math.round(radio*2), (int)Math.round(radio*2) );
+		graphics.fillOval( (int)Math.round(calcX(x)-radio*escalaDibujo), (int)Math.round(calcY(y)-radio*escalaDibujo), (int)Math.round(radio*2*escalaDibujo), (int)Math.round(radio*2*escalaDibujo) );
 		graphics.setColor( color );
-		graphics.drawOval( (int)Math.round(x-radio), (int)Math.round(y-radio), (int)Math.round(radio*2), (int)Math.round(radio*2) );
+		graphics.drawOval( (int)Math.round(calcX(x)-radio*escalaDibujo), (int)Math.round(calcY(y)-radio*escalaDibujo), (int)Math.round(radio*2*escalaDibujo), (int)Math.round(radio*2*escalaDibujo) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -512,7 +635,7 @@ public class VentanaGrafica {
 	public void dibujaCirculo( double x, double y, double radio, float grosor, Color color ) {
 		graphics.setColor( color );
 		graphics.setStroke( new BasicStroke( grosor ));
-		graphics.drawOval( (int)Math.round(x-radio), (int)Math.round(y-radio), (int)Math.round(radio*2), (int)Math.round(radio*2) );
+		graphics.drawOval( (int)Math.round(calcX(x)-radio*escalaDibujo), (int)Math.round(calcY(y)-radio*escalaDibujo), (int)Math.round(radio*2*escalaDibujo), (int)Math.round(radio*2*escalaDibujo) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -556,7 +679,7 @@ public class VentanaGrafica {
 	public void dibujaLinea( double x, double y, double x2, double y2, float grosor, Color color ) {
 		graphics.setColor( color );
 		graphics.setStroke( new BasicStroke( grosor ));
-		graphics.drawLine( (int)Math.round(x), (int)Math.round(y), (int)Math.round(x2), (int)Math.round(y2) );
+		graphics.drawLine( (int)Math.round(calcX(x)), (int)Math.round(calcY(y)), (int)Math.round(calcX(x2)), (int)Math.round(calcY(y2)) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -615,14 +738,15 @@ public class VentanaGrafica {
 	public void dibujaFlecha( double x, double y, double x2, double y2, float grosor, Color color, int largoFl ) {
 		graphics.setColor( color );
 		graphics.setStroke( new BasicStroke( grosor ));
-		graphics.drawLine( (int)Math.round(x), (int)Math.round(y), (int)Math.round(x2), (int)Math.round(y2) );
+		graphics.drawLine( (int)Math.round(calcX(x)), (int)Math.round(calcY(y)), (int)Math.round(calcX(x2)), (int)Math.round(calcY(y2)) );
 		double angulo = Math.atan2( y2-y, x2-x ) + Math.PI;
+		if (!ejeYInvertido) angulo = Math.atan2( y-y2, x2-x ) + Math.PI;
 		double angulo1 = angulo - Math.PI / 10;  // La flecha se forma rotando 1/10 de Pi hacia los dos lados
 		double angulo2 = angulo + Math.PI / 10;
-		graphics.drawLine( (int)Math.round(x2), (int)Math.round(y2), 
-				(int)Math.round(x2+largoFl*Math.cos(angulo1)), (int)Math.round(y2+largoFl*Math.sin(angulo1)) );
-		graphics.drawLine( (int)Math.round(x2), (int)Math.round(y2), 
-				(int)Math.round(x2+largoFl*Math.cos(angulo2)), (int)Math.round(y2+largoFl*Math.sin(angulo2)) );
+		graphics.drawLine( (int)Math.round(calcX(x2)), (int)Math.round(calcY(y2)),
+				(int)Math.round(calcX(x2)+largoFl*Math.cos(angulo1)), (int)Math.round(calcY(y2)+largoFl*Math.sin(angulo1)) );
+		graphics.drawLine( (int)Math.round(calcX(x2)), (int)Math.round(calcY(y2)), 
+				(int)Math.round(calcX(x2)+largoFl*Math.cos(angulo2)), (int)Math.round(calcY(y2)+largoFl*Math.sin(angulo2)) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -664,12 +788,12 @@ public class VentanaGrafica {
 		int numPto = 1;
 		do {
 			pto = punto[numPto];
-			graphics.drawLine( (int)Math.round(puntoAnt.getX()), (int)Math.round(puntoAnt.getY()), (int)Math.round(pto.getX()), (int)Math.round(pto.getY()) );
+			graphics.drawLine( (int)Math.round(calcX(puntoAnt.getX())), (int)Math.round(calcY(puntoAnt.getY())), (int)Math.round(calcX(pto.getX())), (int)Math.round(calcY(pto.getY())) );
 			puntoAnt = pto;
 			numPto++;
 		} while (numPto<punto.length);
 		if (cerrado) {
-			graphics.drawLine( (int)Math.round(pto.getX()), (int)Math.round(pto.getY()), (int)Math.round(puntoIni.getX()), (int)Math.round(puntoIni.getY()) );
+			graphics.drawLine( (int)Math.round(calcX(pto.getX())), (int)Math.round(calcY(pto.getY())), (int)Math.round(calcX(puntoIni.getX())), (int)Math.round(calcY(puntoIni.getY())) );
 		}
 		if (dibujadoInmediato) repaint();
 	}
@@ -693,7 +817,7 @@ public class VentanaGrafica {
 	public void dibujaTexto( double x, double y, String texto, Font font, Color color ) {
 		graphics.setColor( color );
 		graphics.setFont( font );
-		graphics.drawString( texto, (int)Math.round(x), (int)Math.round(y) );
+		graphics.drawString( texto, (int)Math.round(calcX(x)), (int)Math.round(calcY(y)) );
 		if (dibujadoInmediato) repaint();
 	}
 	
@@ -710,9 +834,9 @@ public class VentanaGrafica {
 		Rectangle2D rect = graphics.getFontMetrics(font).getStringBounds(texto, graphics);  // Dimensiones del texto que se va a pintar
 		graphics.setColor( color );
 		graphics.setFont( font );
-		double xCalc = x + anchura/2.0 - rect.getWidth()/2.0;
-		double yCalc = y + altura - graphics.getFontMetrics(font).getDescent() - (altura - rect.getHeight())/2.0;
-		graphics.drawString( texto, (float)xCalc, (float)yCalc );
+		double xCalc = calcX(x) + anchura/2.0*escalaDibujo - rect.getWidth()/2.0;
+		double yCalc = calcY(y) + altura*escalaDibujo - graphics.getFontMetrics(font).getDescent() - (altura*escalaDibujo - rect.getHeight())/2.0;
+		graphics.drawString( texto, (float)calcX(xCalc), (float)calcY(yCalc) );
 		if (dibujadoInmediato) repaint();
 	}
 
@@ -728,14 +852,21 @@ public class VentanaGrafica {
 	 */
 	public void dibujaTextoCentrado( double x, double y, double anchura, double altura, String texto, Font font, Color color, boolean ajustaSiMayor ) {
 		Rectangle2D rect = graphics.getFontMetrics(font).getStringBounds(texto, graphics);  // Dimensiones del texto que se va a pintar
-		while (rect.getWidth() > anchura || rect.getHeight() > altura) {
+		while (rect.getWidth() > anchura*escalaDibujo || rect.getHeight() > altura*escalaDibujo) {
 			font = new Font( font.getName(), font.getStyle(), font.getSize() - 1 );
 			rect = graphics.getFontMetrics(font).getStringBounds(texto, graphics);  // Dimensiones del texto que se va a pintar
 		}
 		graphics.setColor( color );
 		graphics.setFont( font );
-		double xCalc = x + anchura/2.0 - rect.getWidth()/2.0;
-		double yCalc = y + altura - graphics.getFontMetrics(font).getDescent() - (altura - rect.getHeight())/2.0;
+		double xCalc = calcX(x) + anchura/2.0*escalaDibujo - rect.getWidth()/2.0;
+		double yCalc = calcY(y) + (ejeYInvertido?1.0:-1.0)*(altura*escalaDibujo - graphics.getFontMetrics(font).getDescent() - (altura*escalaDibujo - rect.getHeight())/2.0) + (ejeYInvertido?0.0:rect.getHeight()/2);
+		// Vista del cálculo de y (invertida):
+		//   Inicio texto y     
+		//                |
+		//                |
+		//                |               -altura en blanco/2  ^
+		//                |   -descent  ^                      |
+		//       +altura  v             |
 		graphics.drawString( texto, (float)xCalc, (float)yCalc );
 		if (dibujadoInmediato) repaint();
 	}
@@ -834,13 +965,14 @@ public class VentanaGrafica {
 		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR); // Configuración para mejor calidad del gráfico escalado
 		graphics.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);	
-		graphics.translate( centroX-anchuraDibujo/2, centroY-alturaDibujo/2 );
-		graphics.rotate( radsRotacion, anchuraDibujo/2, alturaDibujo/2 );  // Incorporar al gráfico la rotación definida
+		graphics.translate( calcX(centroX)-anchuraDibujo/2*escalaDibujo, calcY(centroY)-alturaDibujo/2*escalaDibujo );
+		graphics.rotate( radsRotacion, anchuraDibujo/2*escalaDibujo, alturaDibujo/2*escalaDibujo );  // Incorporar al gráfico la rotación definida
 		graphics.setComposite(AlphaComposite.getInstance( AlphaComposite.SRC_OVER, opacity ) ); // Incorporar la transparencia definida
-        int anchoDibujado = (int)Math.round(anchuraDibujo*zoom);  // Calcular las coordenadas de dibujado con el zoom, siempre centrado en el label
-        int altoDibujado = (int)Math.round(alturaDibujo*zoom);
-        int difAncho = (anchuraDibujo - anchoDibujado) / 2;  // Offset x para centrar
-        int difAlto = (alturaDibujo - altoDibujado) / 2;     // Offset y para centrar
+        int anchoDibujado = (int)Math.round(anchuraDibujo*zoom*escalaDibujo);  // Calcular las coordenadas de dibujado con el zoom, siempre centrado en el label
+        int altoDibujado = (int)Math.round(alturaDibujo*zoom*escalaDibujo);
+        int difAncho = (int) ((anchuraDibujo* escalaDibujo - anchoDibujado) / 2);  // Offset x para centrar
+        int difAlto = (int) ((alturaDibujo* escalaDibujo - altoDibujado) / 2);     // Offset y para centrar
+        // graphics.drawRect( difAncho, difAlto, anchoDibujado, altoDibujado );
         graphics.drawImage( ii.getImage(), difAncho, difAlto, anchoDibujado, altoDibujado, null);  // Dibujar la imagen con el tamaño calculado tras aplicar el zoom
 		graphics.setTransform( new AffineTransform() );  // Restaurar graphics  (sin rotación ni traslación)
 		graphics.setComposite(AlphaComposite.getInstance( AlphaComposite.SRC_OVER, 1f ));  // Restaurar graphics (pintado sin transparencia)
@@ -992,7 +1124,7 @@ public class VentanaGrafica {
 			panel.add( tfEntrada );
 		}
 		finLecturaTexto = false;
-		tfEntrada.setBounds( (int)x, (int)y, anchura, altura );
+		tfEntrada.setBounds( (int)calcX(x), (int)calcY(y) - (ejeYInvertido?0:(int)(altura*escalaDibujo)), (int)(anchura*escalaDibujo), (int)(altura*escalaDibujo) );
 		tfEntrada.setFont( font );
 		tfEntrada.setForeground( color );
 		tfEntrada.setText( texto==null ? "" : texto );
@@ -1014,5 +1146,85 @@ public class VentanaGrafica {
 		JOptionPane.showMessageDialog( ventana, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE );
 	}
 	
+	/** Modifica el offset de las coordenadas de la ventana (moviendo el punto de origen 0,0 al indicado)
+	 * @param offset	Punto de offset nuevo de dibujado (los cambios no tendrán efecto hasta la siguiente operación de dibujado)
+	 */
+	public void setOffsetDibujo( Point offset ) {
+		offsetInicio = offset;
+	}
+	
+	/** Modifica el offset de las coordenadas de la ventana (moviendo el punto de origen 0,0 al indicado)
+	 * @param incrX	Incremento de x de offset
+	 * @param incrY	Incremento de y de offset
+	 */
+	public void setOffsetDibujo( int incrX, int incrY ) {
+		offsetInicio.translate( incrX, incrY );
+	}
+
+	/** Consulta el offset de las coordenadas de la ventana
+	 * @return	Punto actual de offset de dibujado
+	 */
+	public Point getOffsetDibujo() {
+		return offsetInicio;
+	}
+	
+	/** Modifica la escala de dibujado de la ventana
+	 * @param escala	Nueva escala (1.0 escala 1=1). Por ejemplo con 0.5 el dibujo se escala a la mitad de tamaño, con 2.0 se escala al doble de tamaño
+	 */
+	public void setEscalaDibujo( double escala ) {
+		this.escalaDibujo = escala;
+	}
+	
+	/** Devuelve la escala de dibujado de la ventana
+	 * @return Escala de dibujado (1.0 escala 1=1)
+	 */
+	public double getEscalaDibujo() {
+		return escalaDibujo;
+	}
+	
+	/** Modifica la inversión del eje Y. Actualiza el offset en Y siempre al borde de panel actual (superior o inferior).
+	 * @param invertido	true para invertido con respecto a matemáticas clásicas (crece hacia abajo), false para habitual (crece hacia arriba)
+	 */
+	public void setEjeYInvertido( boolean invertido ) {
+		if (ejeYInvertido) {  // Estaba creciente hacia abajo (lo habitual en pantalla) y hay que ponerlo hacia arriba
+			v.offsetInicio.y = getAltura();
+		} else {  // Estaba creciente hacia arriba (lo habitual en mates) y hay que ponerlo hacia abajo
+			v.offsetInicio.y = 0;
+		}
+		ejeYInvertido = invertido;
+	}
+	
+	/** Informa sobre la inversión del eje Y.
+	 * @return	true indica eje invertido con respecto a matemáticas clásicas (crece hacia abajo), false para habitual (crece hacia arriba)
+	 */
+	public boolean getEjeYInvertido() {
+		return ejeYInvertido;
+	}
+	
+	/** Devuelve un punto del panel de la ventana convertido a coordenadas de offset y escala
+	 * @param punto	Punto lógico en píxels visuales de la ventana
+	 * @return	Ese punto convertido a coordenadas de acuerdo al zoom y offset actual
+	 */
+	public Point2D.Double getPuntoEnEscala( Point punto ) {
+		double x = punto.x-offsetInicio.x;
+		double y = punto.y-offsetInicio.y;
+		if (!ejeYInvertido) {
+			y = -y;
+		}
+		return new Point2D.Double( x/escalaDibujo, y/escalaDibujo );
+	}
+	
+	/** Dibuja los ejes de coordenadas
+	 * @param marcaUnidad	Número positivo en el que se marca la unidad del eje (se dibujará con una flecha)
+	 * @param colorEjes	Color de los ejes
+	 * @param grosor	Grosor de los ejes
+	 */
+	public void dibujaEjes( int marcaUnidad, Color colorEjes, float grosor ) {
+		dibujaLinea( 0, -marcaUnidad*100, 0, marcaUnidad*100, grosor, colorEjes );
+		dibujaLinea( -marcaUnidad*100, 0, marcaUnidad*100, 0, grosor, colorEjes );
+		dibujaCirculo( 0, 0, 2/escalaDibujo, 1.0f, colorEjes, colorEjes);
+		dibujaFlecha( 0, 0, 0, marcaUnidad, grosor, colorEjes, 7 );
+		dibujaFlecha( 0, 0, marcaUnidad, 0, grosor, colorEjes, 7 );
+	}
 	
 }
