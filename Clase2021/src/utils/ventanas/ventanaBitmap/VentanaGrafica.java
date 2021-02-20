@@ -824,8 +824,8 @@ public class VentanaGrafica {
 	/** Dibuja un texto en la ventana, centrado en un rectángulo dado
 	 * @param x	Coordenada x de la esquina superior izquierda del rectángulo
 	 * @param y	Coordenada y de la esquina superior izquierda del rectángulo
-	 * @param anchura
-	 * @param altura
+	 * @param anchura	Anchura del rectángulo
+	 * @param altura	Altura del rectángulo
 	 * @param texto	Texto a dibujar 
 	 * @param font	Tipo de letra con el que dibujar el texto
 	 * @param color	Color del texto
@@ -843,8 +843,8 @@ public class VentanaGrafica {
 	/** Dibuja un texto en la ventana, centrado en un rectángulo dado
 	 * @param x	Coordenada x de la esquina superior izquierda del rectángulo
 	 * @param y	Coordenada y de la esquina superior izquierda del rectángulo
-	 * @param anchura
-	 * @param altura
+	 * @param anchura	Anchura del rectángulo
+	 * @param altura	Altura del rectángulo
 	 * @param texto	Texto a dibujar 
 	 * @param font	Tipo de letra con el que dibujar el texto
 	 * @param color	Color del texto
@@ -1078,8 +1078,8 @@ public class VentanaGrafica {
 		private volatile String retornoLecturaTexto;
 		
 	/** Saca un cuadro en la ventana y permite que el usuario introduzca un texto. La llamada
-	 * solo retorna después de que el usuario introduzca el texto y pulse <Enter> o <Escape> (o salga del cuadro de texto).
-	 * Si se pulsa <Escape> se devuelve null
+	 * solo retorna después de que el usuario introduzca el texto y pulse [Enter] o [Escape] (o salga del cuadro de texto).
+	 * Si se pulsa [Escape] se devuelve null
 	 * @param x	Coordenada x de la esquina superior izquierda del cuadro
 	 * @param y	Coordenada y de la esquina superior izquierda del cuadro
 	 * @param anchura	Anchura en píxels del cuadro de texto
