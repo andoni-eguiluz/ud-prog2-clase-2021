@@ -31,7 +31,7 @@ public class ConceptoDeArray {
 		vectorEnteros = new int[5]; // Entre corchetes, el tamaño del array
 		
 		// La construcción del array define el espacio para los elementos, que se inicializan con valor por defecto 
-		// (0 para los números, falso para boolean, carácter asc 0 para los char) 
+		// (0 para los números, falso para boolean, carácter asc 0 para los char)
 		
 		// Una vez construido, el tamaño del array ya no cambiará nunca. Es decir, tenemos que saber a priori qué tamaño queremos que tenga.
 		// Sus elementos se "indexan" (acceden por índice) desde 0 a tamaño - 1 (el primer elemento es el 0, el último el n-1)
