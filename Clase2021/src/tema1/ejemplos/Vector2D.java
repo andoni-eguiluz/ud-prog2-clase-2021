@@ -7,7 +7,7 @@ public class Vector2D {
 	public String toString() {
 		return "(" + x + "," + y + ")";
 	}
-	 
+	
 	public double getModulo() {
 		return Math.sqrt( x*x + y*y );
 	}
