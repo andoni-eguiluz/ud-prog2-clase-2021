@@ -14,7 +14,7 @@ public class PruebaVector {
 		v2.y = 7.0;
 		System.out.println( v2 );
 		System.out.println( v );
-		Vector2D v3 = v2;
+ 		Vector2D v3 = v2;
 		v3.x = 15.0;
 		System.out.println( v3 );
 		System.out.println( v2 );
