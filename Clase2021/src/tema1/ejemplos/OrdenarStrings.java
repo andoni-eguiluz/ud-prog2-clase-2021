@@ -9,7 +9,7 @@ public class OrdenarStrings {
 		System.out.println( java.util.Arrays.toString( array1 ) );
 		ordenar( array1 );
 		// Ejemplo de foreach para recorrer un array
-		for (String elto : array1) {
+		for (String elto : array1) {  
 			System.out.print( elto + " " );
 		}
 	}
