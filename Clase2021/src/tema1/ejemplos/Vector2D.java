@@ -8,6 +8,9 @@ public class Vector2D {
 		return "(" + x + "," + y + ")";
 	}
 	
+	/**
+	 * @return
+	 */
 	public double getModulo() {
 		return Math.sqrt( x*x + y*y );
 	}
