@@ -8,7 +8,7 @@ public class OrdenarStrings {
 		String[] array1 = { "x", "b", "c", "hola", "bb" };  // Llamando al constructor new String[5]
 		System.out.println( java.util.Arrays.toString( array1 ) );
 		ordenar( array1 );
-		// Ejemplo de foreach para recorrer un array     
+		// Ejemplo de foreach para recorrer un array
 		for (String elto : array1) {
 			System.out.print( elto + " " );
 		}
