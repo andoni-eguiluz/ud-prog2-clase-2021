@@ -11,7 +11,7 @@ public class PruebaVector {
 	public static void main(String[] args) {
 		// Vector2D.x = 5.0;
 		Vector2D v = new Vector2D( 3.0, 5.0 );
-		// v.setX( 3.0 ); 
+		// v.setX( 3.0 );
 		// v.setY( 5.0 );
 		System.out.println( v.getX() + "," + v.getY() );
 		System.out.println( v );
