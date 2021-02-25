@@ -1,15 +1,19 @@
 package tema1.ejemplos;
 
+/** Clase para crear objetos de tipo vector en 2 dimensiones
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 public class Vector2D {
-	private double x = 0.0;  // valor 0 si son numéricos
+	private double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
 	private double y;
-	
+
+	// Este es el constructor implícito, el que hace Java si no hacemos constructor. En este caso también lo programamos
 	/** Construye un nuevo vector 0,0
 	 */
 	public Vector2D() {
 		// Constructor por defecto x y = 0
-		setX( 0.0 );
-		setY( 0.0 );
+		// setX( 0.0 );  Podría hacerse pero en este caso no hace falta al ser el valor por defecto y no haber control de error en el setX
+		// setY( 0.0 );  Podría hacerse pero en este caso no hace falta al ser el valor por defecto y no haber control de error en el setY
 	}
 	
 	/** Construye un vector en coords cartesianas
@@ -21,7 +25,8 @@ public class Vector2D {
 		this.setY( y ); // this.y = y;
 	}
 	
-	// Constructor indirecto
+	// Constructor indirecto 
+	// TODO ¿Debería ser static?
 	/** Construye un vector en coords polares
 	 * @param modulo	Longitud del vector
 	 * @param argumento	Ángulo del vector con respecto al eje OX positivo
@@ -41,11 +46,12 @@ public class Vector2D {
 		return Math.sqrt( x*x + y*y );
 	}
 	
+	/** Calcula y devuelve el argumento del vector (ángulo sobre el OX positivo hacia el OY positivo)
+	 * @return	Ángulo de argumento del vector en radianes
+	 */
 	public double getArgumento() {
 		return Math.atan2(y, x);
 	}
-	
-
 	
 	/** Devuelve la coordenada x
 	 * @return	Coordenada x
@@ -61,14 +67,22 @@ public class Vector2D {
 		this.x = x;
 	}
 	
+	/** Devuelve la coordenada y
+	 * @return	Coordenada y
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/** Cambia la coordenada y
+	 * @param x	Nuevo valor de coordenada y
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
+	/** Convierte el vector a String, en formato (coord.x,coord.y)
+	 */
 	public String toString() {
 		return "(" + x + "," + y + ")";
 	}
