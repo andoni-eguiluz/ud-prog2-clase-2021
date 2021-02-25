@@ -1,5 +1,9 @@
 package tema1.ejemplos;
 
+import java.awt.Color;
+
+import utils.ventanas.ventanaBitmap.VentanaGrafica;
+
 /** Clase para crear objetos de tipo vector en 2 dimensiones
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
@@ -93,5 +97,13 @@ public class Vector2D {
 	public void escala( double escala ) {
 		x *= escala;
 		y *= escala;
+	}
+	
+	/** Dibuja un vector en una ventana gráfica, como una flecha desde el origen hasta sus coordenadas
+	 * @param vent	Ventana en la que dibujar el vector
+	 * @param color	Color de dibujado del vector
+	 */
+	public void dibujar( VentanaGrafica vent, Color color ) {
+		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), 1.0f, color, 12 );
 	}
 }
