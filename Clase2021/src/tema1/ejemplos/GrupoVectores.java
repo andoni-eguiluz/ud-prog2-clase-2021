@@ -26,9 +26,9 @@ public class GrupoVectores {
 		indiceArray++;
 	}
 	
-	/** Comprueba que los vectores naranjas tengan la longitud correcta, 
+	/** Comprueba que los vectores naranjas tengan la longitud correcta (en el rango [100, 250) píxels), 
 	 * muestra información a consola y devuelve info de error
-	 * @return	true si todos los vectores naranjas tienen la longitud correcta, false en caso contrario
+	 * @return	true si todos los vectores naranjas tienen la longitud correcta y todos los no naranjas no tienen esa longitud, false en caso contrario
 	 */
 	public boolean hayCorreccionNaranja() {
 		boolean ret = true;
