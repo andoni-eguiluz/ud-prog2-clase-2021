@@ -10,6 +10,7 @@ import utils.ventanas.ventanaBitmap.VentanaGrafica;
 public class Vector2D {
 	private double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
 	private double y;
+	private Color color;
 
 	// Este es el constructor implícito, el que hace Java si no hacemos constructor. En este caso también lo programamos
 	/** Construye un nuevo vector 0,0
@@ -105,5 +106,13 @@ public class Vector2D {
 	 */
 	public void dibujar( VentanaGrafica vent, Color color ) {
 		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), 1.0f, color, 12 );
+		this.color = color;
+	}
+	
+	/** Devuelve el último color en el que se ha dibujado el vector
+	 * @return	color del último dibujado, null si nunca se ha dibujado
+	 */
+	public Color getColor() {
+		return color;
 	}
 }

@@ -20,8 +20,7 @@ public class PruebaVector {
 	
 	private static void creandoVectores() {
 		VentanaGrafica vent = new VentanaGrafica(600, 400, "Dibujo de vectores");
-		Vector2D[] arrayVects = new Vector2D[200];
-		int indiceArray = 0;
+		GrupoVectores grupo = new GrupoVectores( 200 );
 		Point clickInicial = null;
 		// BOOLEANAS en cortocircuito
 		// log1 || log2 || log3 ...   cuando cualquiera sea TRUE la condición es TRUE
@@ -39,8 +38,7 @@ public class PruebaVector {
 			}
 			if (puedeSerClick && clickInicial!=null) {
 				Vector2D vec = new Vector2D( clickInicial.getX(), clickInicial.getY() );
-				arrayVects[indiceArray] = vec;
-				indiceArray++;
+				grupo.anyadir( vec );
 				if (vec.getModulo()<100) {
 					vec.dibujar( vent, Color.RED );
 				} else if (vec.getModulo()<250) {
@@ -49,18 +47,16 @@ public class PruebaVector {
 					vec.dibujar( vent, Color.GREEN );
 				}
 				System.out.println( "Click en " + clickInicial );
-				System.out.println( "Hay guardados " + indiceArray + " vectores" );
+				System.out.println( "Hay guardados " + grupo.size() + " vectores" );
 			}
 			// System.out.println( clickInicial );
 		}
 		// Hacer algo con los vectores?
 		// Visualizar solo los vectores que tengan longitud entre >= 100 y < 250
-		for (int i=0; i<indiceArray; i++) {
-			if (arrayVects[i].getModulo()>=100 && arrayVects[i].getModulo()<250) {
-				System.out.println( "Debe ser naranja el " + arrayVects[i] );
-			} else {
-				System.out.println( "NO debe ser naranja el " + arrayVects[i] );
-			}
+		if (grupo.hayCorreccionNaranja()) {
+			System.out.println( "Correcto! Los vectores naranjas son los que tienen que ser");
+		} else {
+			System.out.println( "Error: hay vectores incorrectos" );
 		}
 		System.out.println( "Fin!" );
 	}
