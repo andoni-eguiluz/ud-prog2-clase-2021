@@ -342,6 +342,13 @@ public class VentanaGrafica {
 			public void windowClosing(WindowEvent e) {
 				cerrada = true;
 			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// Elimina pulsación de teclas para que no haya pulsación incorrecta al conmutar ventanas
+				codTeclaActualmentePulsada = 0;
+				codTeclaTecleada = 0;
+				teclasPulsadas.clear();
+			}
 		});
 		panel.addMouseListener( new MouseAdapter() {
 			@Override
