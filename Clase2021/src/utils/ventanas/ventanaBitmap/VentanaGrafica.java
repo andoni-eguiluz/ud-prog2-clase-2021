@@ -1153,6 +1153,16 @@ public class VentanaGrafica {
 		JOptionPane.showMessageDialog( ventana, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE );
 	}
 	
+	/** Muestra un cuadro de diálogo de selección de color encima de la ventana y permite al usuario seleccionar un color
+	 * @param mens	Mensaje de título del diálogo
+	 * @return	Color seleccionado, null si no se ha seleccionado ninguno
+	 */
+	public Color eligeColor( String mens ) {
+		JColorChooser jcc = new JColorChooser();
+		int resp = JOptionPane.showConfirmDialog( ventana, jcc, mens, JOptionPane.OK_CANCEL_OPTION );
+		return (resp==JOptionPane.OK_OPTION) ? jcc.getColor() : null;
+	}
+	
 	/** Modifica el offset de las coordenadas de la ventana (moviendo el punto de origen 0,0 al indicado)
 	 * @param offset	Punto de offset nuevo de dibujado (los cambios no tendrán efecto hasta la siguiente operación de dibujado)
 	 */
