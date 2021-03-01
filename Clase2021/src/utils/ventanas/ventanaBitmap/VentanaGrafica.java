@@ -304,7 +304,8 @@ public class VentanaGrafica {
 	private Point offsetInicio = new Point( 0, 0 );  // Offset de inicio de coordenadas ((0,0) por defecto)
 	private double escalaDibujo = 1.0;               // Escala de dibujado (1=1 píxeles por defecto)
 	private boolean ejeYInvertido = true;            // Eje Y invertido con respecto a la representación matemática clásica (por defecto true -crece hacia abajo-)
-
+	private Color colorFondo = Color.white;          // El color de fondo
+	
 		private Object lock = new Object();  // Tema de sincronización de hilos para que el programador usuario no necesite usarlos
 	
 	/** Construye una nueva ventana gráfica con fondo blanco y la visualiza en el centro de la pantalla
@@ -321,7 +322,7 @@ public class VentanaGrafica {
 		// ventana.setSize( anchura, altura ); -- se hace en función del tamaño preferido del panel de dibujo
 		buffer = new BufferedImage( 2000, 1500, BufferedImage.TYPE_INT_ARGB );
 		graphics = buffer.createGraphics();
-		graphics.setPaint ( Color.white );
+		graphics.setPaint ( colorFondo );
 		graphics.fillRect ( 0, 0, 2000, 1500 );
 		panel = new JPanel() {
 			{
@@ -403,6 +404,17 @@ public class VentanaGrafica {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	/** Construye una nueva ventana gráfica y la visualiza en el centro de la pantalla
+	 * @param anchura	Anchura en píxels (valor positivo) de la zona de pintado
+	 * @param altura	Altura en píxels (valor positivo) de la zona de pintado
+	 * @param titulo	Título de la ventana
+	 * @param colorDeFondo  El color de fondo de la ventana gráfica
+	 */
+	public VentanaGrafica(int anchura, int altura, String titulo, Color colorDeFondo) {
+		this(anchura, altura, titulo);
+		this.colorFondo = colorDeFondo;
 	}
 
 	// Intenta poner el look & feel nimbus (solo la primera vez que se crea una ventana)
@@ -550,7 +562,7 @@ public class VentanaGrafica {
 	/** Borra toda la ventana (pinta de color blanco)
 	 */
 	public void borra() {
-		graphics.setColor( Color.white );
+		graphics.setColor( colorFondo );
 		graphics.fillRect( 0, 0, panel.getWidth()+2, panel.getHeight()+2 );
 		if (dibujadoInmediato) repaint();
 	}
@@ -634,7 +646,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso del rectángulo (en píxels)
 	 */
 	public void borraRect( double x, double y, double anchura, double altura, float grosor ) {
-		dibujaRect( x, y, anchura, altura, grosor, Color.white );
+		dibujaRect( x, y, anchura, altura, grosor, colorFondo );
 	}
 	
 	/** Dibuja un círculo relleno en la ventana
@@ -685,7 +697,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso del círculo (en píxels)
 	 */
 	public void borraCirculo( double x, double y, double radio, float grosor ) {
-		dibujaCirculo( x, y, radio, grosor, Color.white );
+		dibujaCirculo( x, y, radio, grosor, colorFondo );
 	}
 	
 	/** Dibuja una línea en la ventana
@@ -731,7 +743,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso de la línea (en píxels)
 	 */
 	public void borraLinea( double x, double y, double x2, double y2, float grosor ) {
-		dibujaLinea( x, y, x2, y2, grosor, Color.white );
+		dibujaLinea( x, y, x2, y2, grosor, colorFondo );
 	}
 
 	/** Dibuja una flecha en la ventana
@@ -798,7 +810,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso de la línea (en píxels)
 	 */
 	public void borraFlecha( double x, double y, double x2, double y2, float grosor ) {
-		dibujaFlecha( x, y, x2, y2, grosor, Color.white );
+		dibujaFlecha( x, y, x2, y2, grosor, colorFondo );
 	}
 	
 	/** Dibuja un polígono en la ventana
@@ -833,7 +845,7 @@ public class VentanaGrafica {
 	 * @param punto		Puntos a borrar (cada punto se enlaza con el siguiente)
 	 */
 	public void borraPoligono( float grosor, boolean cerrado, Point2D... punto ) {
-		dibujaPoligono( grosor, Color.white, cerrado, punto );
+		dibujaPoligono( grosor, colorFondo, cerrado, punto );
 	}
 
 	/** Dibuja un texto en la ventana
@@ -1238,6 +1250,21 @@ public class VentanaGrafica {
 	 */
 	public boolean getEjeYInvertido() {
 		return ejeYInvertido;
+	}
+	
+	/** Establece el color de fondo
+	 * @param color El color de fondo a establecer
+	 */
+	public void setColorFondo(Color color) {
+		colorFondo = color;
+		graphics.setPaint(color);
+	}
+	
+	/** Devuelve el color de fondo
+	 * @return El color de fondo actual
+	 */
+	public Color getColorFondo() {
+		return colorFondo;
 	}
 	
 	/** Devuelve un punto del panel de la ventana convertido a coordenadas de offset y escala
