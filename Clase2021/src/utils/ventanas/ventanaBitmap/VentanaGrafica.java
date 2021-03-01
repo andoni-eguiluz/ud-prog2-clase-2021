@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.*;
 
 /** Clase ventana sencilla para dibujado directo a la ventana
+ * v 1.2.1 - Incorpora posibilidad de cambiar el color de fondo y el soporte para clic derecho y central.
  * v 1.2 - Incorpora posibilidad de cambio de zoom y offset (desplamiento) de origen
  * v 1.1.6 - Incorpora método para dibujar texto centrado
  * v 1.1.5 - Incorpora método para cambiar el tipo de letra de la línea de mensajes, método para consultar el mensaje actual
@@ -295,6 +296,8 @@ public class VentanaGrafica {
 	private Graphics2D graphics;    // Objeto gráfico sobre el que dibujar (del buffer)
 	private Point pointPressed;     // Coordenada pulsada de ratón (si existe)
 	private boolean botonIzquierdo; // Información de si el último botón pulsado es izquierdo o no lo es
+	private boolean botonDerecho;   // Información de si el ultimo botón pulsado es derecho o no lo es
+	private boolean botonMedio;     // Información de si el ultimo botón pulsado es el del medio o no lo es
 	private Point pointMoved;       // Coordenada pasada de ratón (si existe)
 	private Point pointMovedPrev;   // Coordenada pasada anterior de ratón (si existe)
 	private boolean dibujadoInmediato = true; // Refresco de dibujado en cada orden de dibujado
@@ -361,7 +364,10 @@ public class VentanaGrafica {
 			public void mousePressed(MouseEvent e) {
 				synchronized (lock) {
 					pointPressed = e.getPoint();
-					botonIzquierdo = (e.getButton() == MouseEvent.BUTTON1);
+					botonIzquierdo = SwingUtilities.isLeftMouseButton(e);
+					botonDerecho = SwingUtilities.isRightMouseButton(e);
+					botonMedio = SwingUtilities.isMiddleMouseButton(e);
+					
 				}
 			}
 		});
@@ -376,7 +382,9 @@ public class VentanaGrafica {
 			public void mouseDragged(MouseEvent e) {
 				synchronized (lock) {
 					pointPressed = e.getPoint();
-					botonIzquierdo = (e.getButton() == MouseEvent.BUTTON1);
+					botonIzquierdo = SwingUtilities.isLeftMouseButton(e);
+					botonDerecho = SwingUtilities.isRightMouseButton(e);
+					botonMedio = SwingUtilities.isMiddleMouseButton(e);
 				}
 			}
 		});
@@ -462,6 +470,20 @@ public class VentanaGrafica {
 	 */
 	public boolean isBotonIzquierdo() {
 		return botonIzquierdo;
+	}
+	
+	/** Devuelve la información de si el último botón pulsado es derecho o no lo es
+	 * @return	true si el último botón de ratón pulsado es el izquierdo
+	 */
+	public boolean isBotonDerech() {
+		return botonDerecho;
+	}
+	
+	/** Devuelve la información de si el último botón pulsado es el del medio o no lo es
+	 * @return	true si el último botón de ratón pulsado es el izquierdo
+	 */
+	public boolean isBotonMedio() {
+		return botonMedio;
 	}
 	
 	/** Devuelve el punto donde está el ratón en este momento
