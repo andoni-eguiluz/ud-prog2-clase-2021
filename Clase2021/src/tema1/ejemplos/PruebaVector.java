@@ -2,6 +2,7 @@ package tema1.ejemplos;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
@@ -20,6 +21,8 @@ public class PruebaVector {
 	
 	private static void creandoVectores() {
 		VentanaGrafica vent = new VentanaGrafica(600, 400, "Dibujo de vectores");
+		// TODO Quitar esto si solo se tiene una ventana
+		vent.getJFrame().setLocation( 2000, 0 );
 		GrupoVectores grupo = new GrupoVectores( 200 );
 		Point clickInicial = null;
 		// BOOLEANAS en cortocircuito
@@ -37,17 +40,23 @@ public class PruebaVector {
 				// System.out.println( clickInicial + " - " + clickFinal );
 			}
 			if (puedeSerClick && clickInicial!=null) {
-				Vector2D vec = new Vector2D( clickInicial.getX(), clickInicial.getY() );
-				grupo.anyadir( vec );
-				if (vec.getModulo()<100) {
-					vec.dibujar( vent, Color.RED );
-				} else if (vec.getModulo()<250) {
-					vec.dibujar( vent, Color.ORANGE );
-				} else {
-					vec.dibujar( vent, Color.GREEN );
+				// Click
+				// 2 ops distintas Ctrl o con Alt
+				if (vent.isTeclaPulsada(KeyEvent.VK_ALT)) {
+					
+				} else if (vent.isTeclaPulsada( KeyEvent.VK_CONTROL)) {
+					Vector2D vec = new Vector2D( clickInicial.getX(), clickInicial.getY() );
+					grupo.anyadir( vec );
+					if (vec.getModulo()<100) {
+						vec.dibujar( vent, Color.RED );
+					} else if (vec.getModulo()<250) {
+						vec.dibujar( vent, Color.ORANGE );
+					} else {
+						vec.dibujar( vent, Color.GREEN );
+					}
+					System.out.println( "Click en " + clickInicial );
+					System.out.println( "Hay guardados " + grupo.size() + " vectores" );
 				}
-				System.out.println( "Click en " + clickInicial );
-				System.out.println( "Hay guardados " + grupo.size() + " vectores" );
 			}
 			// System.out.println( clickInicial );
 		}
@@ -84,8 +93,18 @@ public class PruebaVector {
 		v.dibujar( vent, Color.BLUE );
 		v2.dibujar( vent, Color.RED );
 		v3.dibujar( vent, Color.ORANGE );
-		vent.espera( 5000 );  // Espera 5 segundos
+		// vent.espera( 5000 );  // Espera 5 segundos
 		vent.acaba(); // Hacer esto cuando se quiera acabar la ventana (si se hace muy pronto casi ni se llegará a ver)
+		
+		GrupoVectores gv = new GrupoVectores( 10 );
+		gv.anyadir( v );
+		gv.anyadir( v2 );
+		gv.anyadir( v3 );
+		System.out.println( gv );
+		gv.insertar( 1, new Vector2D(50,50) );
+		System.out.println( gv );
+		gv.borrar( 2 );
+		System.out.println( gv );
 	}
 	
 }
