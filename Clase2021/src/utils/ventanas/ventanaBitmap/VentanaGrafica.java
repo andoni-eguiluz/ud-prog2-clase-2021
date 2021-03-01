@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.*;
 
 /** Clase ventana sencilla para dibujado directo a la ventana
+ * v 1.2.1 - Incorpora posibilidad de cambiar el color de fondo y el soporte para clic derecho y central.
  * v 1.2 - Incorpora posibilidad de cambio de zoom y offset (desplamiento) de origen
  * v 1.1.6 - Incorpora método para dibujar texto centrado
  * v 1.1.5 - Incorpora método para cambiar el tipo de letra de la línea de mensajes, método para consultar el mensaje actual
@@ -295,13 +296,16 @@ public class VentanaGrafica {
 	private Graphics2D graphics;    // Objeto gráfico sobre el que dibujar (del buffer)
 	private Point pointPressed;     // Coordenada pulsada de ratón (si existe)
 	private boolean botonIzquierdo; // Información de si el último botón pulsado es izquierdo o no lo es
+	private boolean botonDerecho;   // Información de si el ultimo botón pulsado es derecho o no lo es
+	private boolean botonMedio;     // Información de si el ultimo botón pulsado es el del medio o no lo es
 	private Point pointMoved;       // Coordenada pasada de ratón (si existe)
 	private Point pointMovedPrev;   // Coordenada pasada anterior de ratón (si existe)
 	private boolean dibujadoInmediato = true; // Refresco de dibujado en cada orden de dibujado
 	private Point offsetInicio = new Point( 0, 0 );  // Offset de inicio de coordenadas ((0,0) por defecto)
 	private double escalaDibujo = 1.0;               // Escala de dibujado (1=1 píxeles por defecto)
 	private boolean ejeYInvertido = true;            // Eje Y invertido con respecto a la representación matemática clásica (por defecto true -crece hacia abajo-)
-
+	private Color colorFondo = Color.white;          // El color de fondo
+	
 		private Object lock = new Object();  // Tema de sincronización de hilos para que el programador usuario no necesite usarlos
 	
 	/** Construye una nueva ventana gráfica con fondo blanco y la visualiza en el centro de la pantalla
@@ -318,7 +322,7 @@ public class VentanaGrafica {
 		// ventana.setSize( anchura, altura ); -- se hace en función del tamaño preferido del panel de dibujo
 		buffer = new BufferedImage( 2000, 1500, BufferedImage.TYPE_INT_ARGB );
 		graphics = buffer.createGraphics();
-		graphics.setPaint ( Color.white );
+		graphics.setPaint ( colorFondo );
 		graphics.fillRect ( 0, 0, 2000, 1500 );
 		panel = new JPanel() {
 			{
@@ -361,7 +365,10 @@ public class VentanaGrafica {
 			public void mousePressed(MouseEvent e) {
 				synchronized (lock) {
 					pointPressed = e.getPoint();
-					botonIzquierdo = (e.getButton() == MouseEvent.BUTTON1);
+					botonIzquierdo = SwingUtilities.isLeftMouseButton(e);
+					botonDerecho = SwingUtilities.isRightMouseButton(e);
+					botonMedio = SwingUtilities.isMiddleMouseButton(e);
+					
 				}
 			}
 		});
@@ -376,7 +383,9 @@ public class VentanaGrafica {
 			public void mouseDragged(MouseEvent e) {
 				synchronized (lock) {
 					pointPressed = e.getPoint();
-					botonIzquierdo = (e.getButton() == MouseEvent.BUTTON1);
+					botonIzquierdo = SwingUtilities.isLeftMouseButton(e);
+					botonDerecho = SwingUtilities.isRightMouseButton(e);
+					botonMedio = SwingUtilities.isMiddleMouseButton(e);
 				}
 			}
 		});
@@ -395,6 +404,17 @@ public class VentanaGrafica {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	/** Construye una nueva ventana gráfica y la visualiza en el centro de la pantalla
+	 * @param anchura	Anchura en píxels (valor positivo) de la zona de pintado
+	 * @param altura	Altura en píxels (valor positivo) de la zona de pintado
+	 * @param titulo	Título de la ventana
+	 * @param colorDeFondo  El color de fondo de la ventana gráfica
+	 */
+	public VentanaGrafica(int anchura, int altura, String titulo, Color colorDeFondo) {
+		this(anchura, altura, titulo);
+		this.colorFondo = colorDeFondo;
 	}
 
 	// Intenta poner el look & feel nimbus (solo la primera vez que se crea una ventana)
@@ -464,6 +484,20 @@ public class VentanaGrafica {
 		return botonIzquierdo;
 	}
 	
+	/** Devuelve la información de si el último botón pulsado es derecho o no lo es
+	 * @return	true si el último botón de ratón pulsado es el izquierdo
+	 */
+	public boolean isBotonDerecho() {
+		return botonDerecho;
+	}
+	
+	/** Devuelve la información de si el último botón pulsado es el del medio o no lo es
+	 * @return	true si el último botón de ratón pulsado es el izquierdo
+	 */
+	public boolean isBotonMedio() {
+		return botonMedio;
+	}
+	
 	/** Devuelve el punto donde está el ratón en este momento
 	 * @return	Punto relativo a la ventana, null si el ratón no se ha movido nunca
 	 */
@@ -528,7 +562,7 @@ public class VentanaGrafica {
 	/** Borra toda la ventana (pinta de color blanco)
 	 */
 	public void borra() {
-		graphics.setColor( Color.white );
+		graphics.setColor( colorFondo );
 		graphics.fillRect( 0, 0, panel.getWidth()+2, panel.getHeight()+2 );
 		if (dibujadoInmediato) repaint();
 	}
@@ -612,7 +646,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso del rectángulo (en píxels)
 	 */
 	public void borraRect( double x, double y, double anchura, double altura, float grosor ) {
-		dibujaRect( x, y, anchura, altura, grosor, Color.white );
+		dibujaRect( x, y, anchura, altura, grosor, colorFondo );
 	}
 	
 	/** Dibuja un círculo relleno en la ventana
@@ -663,7 +697,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso del círculo (en píxels)
 	 */
 	public void borraCirculo( double x, double y, double radio, float grosor ) {
-		dibujaCirculo( x, y, radio, grosor, Color.white );
+		dibujaCirculo( x, y, radio, grosor, colorFondo );
 	}
 	
 	/** Dibuja una línea en la ventana
@@ -709,7 +743,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso de la línea (en píxels)
 	 */
 	public void borraLinea( double x, double y, double x2, double y2, float grosor ) {
-		dibujaLinea( x, y, x2, y2, grosor, Color.white );
+		dibujaLinea( x, y, x2, y2, grosor, colorFondo );
 	}
 
 	/** Dibuja una flecha en la ventana
@@ -776,7 +810,7 @@ public class VentanaGrafica {
 	 * @param grosor	Grueso de la línea (en píxels)
 	 */
 	public void borraFlecha( double x, double y, double x2, double y2, float grosor ) {
-		dibujaFlecha( x, y, x2, y2, grosor, Color.white );
+		dibujaFlecha( x, y, x2, y2, grosor, colorFondo );
 	}
 	
 	/** Dibuja un polígono en la ventana
@@ -811,7 +845,7 @@ public class VentanaGrafica {
 	 * @param punto		Puntos a borrar (cada punto se enlaza con el siguiente)
 	 */
 	public void borraPoligono( float grosor, boolean cerrado, Point2D... punto ) {
-		dibujaPoligono( grosor, Color.white, cerrado, punto );
+		dibujaPoligono( grosor, colorFondo, cerrado, punto );
 	}
 
 	/** Dibuja un texto en la ventana
@@ -1216,6 +1250,21 @@ public class VentanaGrafica {
 	 */
 	public boolean getEjeYInvertido() {
 		return ejeYInvertido;
+	}
+	
+	/** Establece el color de fondo
+	 * @param color El color de fondo a establecer
+	 */
+	public void setColorFondo(Color color) {
+		colorFondo = color;
+		graphics.setPaint(color);
+	}
+	
+	/** Devuelve el color de fondo
+	 * @return El color de fondo actual
+	 */
+	public Color getColorFondo() {
+		return colorFondo;
 	}
 	
 	/** Devuelve un punto del panel de la ventana convertido a coordenadas de offset y escala
