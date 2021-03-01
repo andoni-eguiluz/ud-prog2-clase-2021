@@ -8,6 +8,15 @@ import utils.ventanas.ventanaBitmap.VentanaGrafica;
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
 public class Vector2D {
+
+	//--------------------------------
+	// STATIC
+	//--------------------------------
+	public static final Vector2D VECTOR0 = new Vector2D();
+	
+	//--------------------------------
+	// NO STATIC
+	//--------------------------------
 	private double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
 	private double y;
 	private Color color;
@@ -115,4 +124,35 @@ public class Vector2D {
 	public Color getColor() {
 		return color;
 	}
+	
+	// Métodos de picking
+	
+	/** Calcula la distancia de un punto al vector
+	 * @param punto	Punto
+	 * @return	Distancia menor entre el punto y el vector (segmento)
+	 */
+	public double distancia( Vector2D punto ) {
+		// Opción 1: Usar funciones ya existentes en la API de Java
+		java.awt.geom.Line2D.Double segmento = new java.awt.geom.Line2D.Double( VECTOR0.getPoint(), getPoint() );
+		double dist = segmento.ptSegDist( punto.getPoint() );
+		// Opción 2: Calcularlo directamente. Por ejemplo cálculo en base a operaciones con vectores:
+		return dist;
+	}
+	
+	/** Devuelve el punto correspondiente a un vector
+	 * @return	Punto x,y de ese vector
+	 */
+	public java.awt.geom.Point2D getPoint() {
+		return new java.awt.geom.Point2D.Double( x, y );
+	}
+	
+	/** Comprueba si un punto del plano toca con el vector
+	 * @param punto	Punto a comprobar
+	 * @param margen	Margen de distancia con el que se entiende que hay contacto (por ejemplo 2.0 - 2 o menos píxels de distancia)
+	 * @return	true si el punto toca con el vector dentro del margen indicado, false en caso contrario
+	 */
+	public boolean toca( Vector2D punto, double margen ) {
+		return distancia( punto ) <= margen;
+	}
+	
 }
