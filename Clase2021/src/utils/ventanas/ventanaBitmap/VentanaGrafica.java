@@ -487,7 +487,7 @@ public class VentanaGrafica {
 	/** Devuelve la información de si el último botón pulsado es derecho o no lo es
 	 * @return	true si el último botón de ratón pulsado es el izquierdo
 	 */
-	public boolean isBotonDerech() {
+	public boolean isBotonDerecho() {
 		return botonDerecho;
 	}
 	
