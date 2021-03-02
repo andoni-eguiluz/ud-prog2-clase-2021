@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.*;
 
 /** Clase ventana sencilla para dibujado directo a la ventana
- * v 1.2.1 - Incorpora posibilidad de cambiar el color de fondo y el soporte para clic derecho y central.
+ * v 1.2.1 - Incorpora posibilidad de cambiar el color de fondo y el soporte para clic derecho y central  (gracias a https://github.com/LNDF)
  * v 1.2 - Incorpora posibilidad de cambio de zoom y offset (desplamiento) de origen
  * v 1.1.6 - Incorpora método para dibujar texto centrado
  * v 1.1.5 - Incorpora método para cambiar el tipo de letra de la línea de mensajes, método para consultar el mensaje actual
@@ -313,8 +313,19 @@ public class VentanaGrafica {
 	 * @param altura	Altura en píxels (valor positivo) de la zona de pintado
 	 * @param titulo	Título de la ventana
 	 */
-	@SuppressWarnings("serial")
 	public VentanaGrafica( int anchura, int altura, String titulo ) {
+		this(anchura, altura, titulo, Color.WHITE );
+	}
+	
+	/** Construye una nueva ventana gráfica y la visualiza en el centro de la pantalla
+	 * @param anchura	Anchura en píxels (valor positivo) de la zona de pintado
+	 * @param altura	Altura en píxels (valor positivo) de la zona de pintado
+	 * @param titulo	Título de la ventana
+	 * @param colorDeFondo  El color de fondo de la ventana gráfica
+	 */
+	@SuppressWarnings("serial")
+	public VentanaGrafica(int anchura, int altura, String titulo, Color colorDeFondo) {
+		this.colorFondo = colorDeFondo;
 		setLookAndFeel();
 		cerrada = false;
 		ventana = new JFrame( titulo );
@@ -404,17 +415,6 @@ public class VentanaGrafica {
 				e1.printStackTrace();
 			}
 		}
-	}
-	
-	/** Construye una nueva ventana gráfica y la visualiza en el centro de la pantalla
-	 * @param anchura	Anchura en píxels (valor positivo) de la zona de pintado
-	 * @param altura	Altura en píxels (valor positivo) de la zona de pintado
-	 * @param titulo	Título de la ventana
-	 * @param colorDeFondo  El color de fondo de la ventana gráfica
-	 */
-	public VentanaGrafica(int anchura, int altura, String titulo, Color colorDeFondo) {
-		this(anchura, altura, titulo);
-		this.colorFondo = colorDeFondo;
 	}
 
 	// Intenta poner el look & feel nimbus (solo la primera vez que se crea una ventana)
