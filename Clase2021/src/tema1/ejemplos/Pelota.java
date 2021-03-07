@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
-/** Clase que permite crear y gestionar pelotas y dibujarlas en una ventana gráfica
+/** Clase de ejemplo que permite crear y gestionar pelotas y dibujarlas en una ventana gráfica
  */
 public class Pelota {
 	
