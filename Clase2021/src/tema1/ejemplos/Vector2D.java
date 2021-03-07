@@ -1,6 +1,7 @@
 package tema1.ejemplos;
 
 import java.awt.Color;
+import java.awt.Point;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
@@ -94,6 +95,11 @@ public class Vector2D {
 	public void setY(double y) {
 		this.y = y;
 	}
+	
+	public void setXY( Point puntoXY ) {
+		setX( puntoXY.getX() );
+		setY( puntoXY.getY() );
+	}
 
 	/** Convierte el vector a String, en formato (coord.x,coord.y)
 	 */
@@ -115,6 +121,16 @@ public class Vector2D {
 	 */
 	public void dibujar( VentanaGrafica vent, Color color ) {
 		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), 1.0f, color, 12 );
+		this.color = color;
+	}
+	
+	/** Dibuja un vector en una ventana gráfica, como una flecha desde el origen hasta sus coordenadas
+	 * @param vent	Ventana en la que dibujar el vector
+	 * @param color	Color de dibujado del vector
+	 * @param grosor	Ancho de la línea que se dibuja
+	 */
+	public void dibujar( VentanaGrafica vent, Color color, float grosor ) {
+		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), grosor, color, 12 );
 		this.color = color;
 	}
 	

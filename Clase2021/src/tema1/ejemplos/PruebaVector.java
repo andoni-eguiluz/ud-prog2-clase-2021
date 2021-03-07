@@ -25,11 +25,13 @@ public class PruebaVector {
 		// vent.getJFrame().setLocation( 2000, 0 );
 		GrupoVectores grupo = new GrupoVectores( 200 );
 		Point clickInicial = null;
+		vent.setMensaje( "Ctrl-click para añadir vectores, Alt-click para borrar, Click selecciona y otro click mueve" );
 		vent.setDibujadoInmediato( false ); // Preparación de doble buffer
+		Vector2D vSel = null;
 		// BOOLEANAS en cortocircuito
 		// log1 || log2 || log3 ...   cuando cualquiera sea TRUE la condición es TRUE
 		// log1 && log2 && log3 ... cuando cualquiera sea FALSE la condición es FALSE
-		while (clickInicial==null || (clickInicial.getX() < 580 || clickInicial.getY() < 390)) {
+		while (!vent.estaCerrada() && (clickInicial==null || (clickInicial.getX() < 580 || clickInicial.getY() < 390))) {
 			clickInicial = vent.getRatonPulsado();
 			Point clickFinal = clickInicial;
 			boolean puedeSerClick = true;
@@ -45,18 +47,11 @@ public class PruebaVector {
 				// 2 ops distintas Ctrl o con Alt
 				if (vent.isTeclaPulsada(KeyEvent.VK_ALT)) {
 					// Comprobar si hay un vector en ese punto
-					int vABorrar = -1;
-					for (int i=0; i<grupo.size(); i++) {
-						Vector2D temp = new Vector2D( clickInicial.getX(), clickInicial.getY() );
-						// System.out.println( grupo.get(i).distancia( temp ) + " a " + clickInicial );
-						// System.out.println( grupo.get(i).toca( temp, 5.0 ) + " a " + clickInicial );
-						if (grupo.get(i).toca( temp, 5.0 )) {
-							vABorrar = i;
-						}
-					}
+					int vABorrar = comprobarVectorEnClick( grupo, clickInicial );
 					if (vABorrar!=-1) {
 						System.out.println( "Borrado el vector " + vABorrar );
 						grupo.borrar(vABorrar);
+						vSel = null;
 					}
 				} else if (vent.isTeclaPulsada( KeyEvent.VK_CONTROL)) {
 					Vector2D vec = new Vector2D( clickInicial.getX(), clickInicial.getY() );
@@ -68,8 +63,19 @@ public class PruebaVector {
 					} else {
 						vec.dibujar( vent, Color.GREEN );
 					}
+					vSel = null;
 					System.out.println( "Click en " + clickInicial );
 					System.out.println( "Hay guardados " + grupo.size() + " vectores" );
+				} else {
+					// Click sin ctrl ni alt
+					int vASeleccionar = comprobarVectorEnClick( grupo, clickInicial );
+					if (vASeleccionar!=-1) { // Cuando se hace sobre un vector - se selecciona
+						vSel = grupo.get(vASeleccionar);
+					} else {  // Se hace sobre el fondo
+						if (vSel!=null) {  // Mover el vector ya seleccionado
+							vSel.setXY( clickInicial );
+						}
+					}
 				}
 				// System.out.println( clickInicial );
 			}
@@ -77,6 +83,9 @@ public class PruebaVector {
 			vent.borra();
 			for (int i=0; i<grupo.size(); i++) {
 				grupo.get(i).dibujar(vent, grupo.get(i).getColor() );
+			}
+			if (vSel!=null) {
+				vSel.dibujar( vent, vSel.getColor(), 3.0f );
 			}
 			vent.repaint();  // Volcado de doble buffer (para pintar sin flickering -el cambio de pantalla es suave entre fotogramas-)
 			vent.espera(20);  // Espera hasta el siguiente frame (20 msgs = 50 frames por segundo aprox.)  (1000/20 = 50)
@@ -89,6 +98,20 @@ public class PruebaVector {
 			System.out.println( "Error: hay vectores incorrectos" );
 		}
 		System.out.println( "Fin!" );
+		vent.acaba();
+	}
+	
+	private static int comprobarVectorEnClick( GrupoVectores grupo, Point clickInicial ) {
+		int vEnClick = -1;
+		for (int i=0; i<grupo.size(); i++) {
+			Vector2D temp = new Vector2D( clickInicial.getX(), clickInicial.getY() );
+			// System.out.println( grupo.get(i).distancia( temp ) + " a " + clickInicial );
+			// System.out.println( grupo.get(i).toca( temp, 5.0 ) + " a " + clickInicial );
+			if (grupo.get(i).toca( temp, 5.0 )) {
+				vEnClick = i;
+			}
+		}
+		return vEnClick;
 	}
 	
 	// Pruebas iniciales con vectores
