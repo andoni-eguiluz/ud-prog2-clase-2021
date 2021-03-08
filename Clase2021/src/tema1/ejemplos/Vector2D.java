@@ -47,12 +47,32 @@ public class Vector2D {
 	 * @param argumento	Ángulo del vector con respecto al eje OX positivo
 	 * @return	Devuelve el vector creado
 	 */
-	public Vector2D crearVectorPolar( double modulo, double argumento ) {
+	public static Vector2D crearVectorPolar( double modulo, double argumento ) {
 		Vector2D ret = new Vector2D();
 		ret.setX( modulo * Math.cos(argumento) );
 		ret.setY( modulo * Math.sin(argumento) );
 		return ret;
 	}
+	
+	// Suma
+	/** Modifica el vector sumándole otro
+	 * @param vSumando	Vector a sumar al vector en curso
+	 */
+	public void sumarA( Vector2D vSumando ) {
+		this.x += vSumando.x;
+		this.y += vSumando.y;
+	}
+	
+	/** Suma el vector en curso con otro y devuelve el resultado
+	 * @param vSumando	Segundo vector a sumar
+	 * @return	Nuevo vector con valor de la suma de ambos
+	 */
+	public Vector2D sumar( Vector2D vSumando ) {
+		Vector2D res = new Vector2D( this.x, this.y );
+		res.sumarA( vSumando );
+		return res;
+	}
+	
 	
 	/** Calcula y devuelve el módulo del vector (longitud)
 	 * @return	Devuelve el módulo del vector calculado por pitágoras

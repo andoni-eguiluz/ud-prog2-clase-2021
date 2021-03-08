@@ -10,20 +10,45 @@ import utils.ventanas.ventanaBitmap.VentanaGrafica;
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
 public class PruebaVector {
+
+	private static final int ANCHO_VENTANA = 600;
+	private static final int ALTO_VENTANA = 400;
+	private static final int NUM_MAX_VECTORES = 200;
 	
 	/** Método principal de prueba de la clase
 	 * @param args	No utilizado
 	 */
 	public static void main(String[] args) {
 		// pruebasIniciales();
-		creandoVectores();
+		// creandoVectores();
+		pruebasFinales();
 	}
 	
+	private static void pruebasFinales() {
+		// Construcción directa e indirecta
+		Vector2D v1 = new Vector2D( 100, 100 );
+		Vector2D v2 = Vector2D.crearVectorPolar( 100, Math.PI/2 );
+		System.out.println( "v2 = " + v2 );
+		// Suma de vectores?
+		// v1 += v2;
+		// Vector2D v3 = v1 + v2;
+		// Orientado a objetos
+		// Manera 1:
+		v1.sumarA( v2 );
+		System.out.println( "v1 = " + v1 );
+		// Alt. 1 Vector2D v3 = Vector2D.sumar( v1, v2 );
+		// Alt. 2 Vector2D v3 = new Vector2D( v1, v2 );
+		// Alt. 3
+		Vector2D v3 = v1.sumar( v2 );
+		System.out.println( "v3 = " + v3 );
+	}
+	
+	
 	private static void creandoVectores() {
-		VentanaGrafica vent = new VentanaGrafica(600, 400, "Dibujo de vectores");
+		VentanaGrafica vent = new VentanaGrafica( ANCHO_VENTANA, ALTO_VENTANA, "Dibujo de vectores");
 		// Poner esto si se quiere cambiar la posición inicial de la ventana:
 		// vent.getJFrame().setLocation( 2000, 0 );
-		GrupoVectores grupo = new GrupoVectores( 200 );
+		GrupoVectores grupo = new GrupoVectores( NUM_MAX_VECTORES );
 		Point clickInicial = null;
 		vent.setMensaje( "Ctrl-click para añadir vectores, Alt-click para borrar, Click selecciona y otro click mueve" );
 		vent.setDibujadoInmediato( false ); // Preparación de doble buffer
