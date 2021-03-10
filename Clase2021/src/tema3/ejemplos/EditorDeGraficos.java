@@ -19,32 +19,10 @@ public class EditorDeGraficos {
 	 * @param args	No utilizado
 	 */
 	public static void main(String[] args) {
-		// pruebasIniciales();
-		creandoVectores();
-		// pruebasFinales();
+		edicionDeVectores();
 	}
 	
-	private static void pruebasFinales() {
-		// Construcción directa e indirecta
-		Vector2D v1 = new Vector2D( 100, 100 );
-		Vector2D v2 = Vector2D.crearVectorPolar( 100, Math.PI/2 );
-		System.out.println( "v2 = " + v2 );
-		// Suma de vectores?
-		// v1 += v2;
-		// Vector2D v3 = v1 + v2;
-		// Orientado a objetos
-		// Manera 1:
-		v1.sumarA( v2 );
-		System.out.println( "v1 = " + v1 );
-		// Alt. 1 Vector2D v3 = Vector2D.sumar( v1, v2 );
-		// Alt. 2 Vector2D v3 = new Vector2D( v1, v2 );
-		// Alt. 3
-		Vector2D v3 = v1.sumar( v2 );
-		System.out.println( "v3 = " + v3 );
-	}
-	
-	
-	private static void creandoVectores() {
+	private static void edicionDeVectores() {
 		VentanaGrafica vent = new VentanaGrafica( ANCHO_VENTANA, ALTO_VENTANA, "Dibujo de vectores");
 		// Poner esto si se quiere cambiar la posición inicial de la ventana:
 		// vent.getJFrame().setLocation( 2000, 0 );
@@ -137,43 +115,6 @@ public class EditorDeGraficos {
 			}
 		}
 		return vEnClick;
-	}
-	
-	// Pruebas iniciales con vectores
-	private static void pruebasIniciales() {
-		// Vector2D.x = 5.0;
-		Vector2D v = new Vector2D( 300.0, 200.0 );
-		//  v.setX( 3.0 );
-		//  v.setY( 5.0 );
-		System.out.println( v.getX() + "," + v.getY() );
-		System.out.println( v );
-		System.out.println( v.getModulo() );
-		Vector2D v2 = new Vector2D();
-		v2.setX( 200.0 );
-		v2.setY( 70.0 );
-		System.out.println( v2 );
-		System.out.println( v );
-		Vector2D v3 = v2;
-		v3.setX( 15.0 );
-		System.out.println( v3 );
-		System.out.println( v2 );
-		
-		VentanaGrafica vent = new VentanaGrafica(600, 400, "Dibujo de vectores");
-		v.dibujar( vent, Color.BLUE );
-		v2.dibujar( vent, Color.RED );
-		v3.dibujar( vent, Color.ORANGE );
-		// vent.espera( 5000 );  // Espera 5 segundos
-		vent.acaba(); // Hacer esto cuando se quiera acabar la ventana (si se hace muy pronto casi ni se llegará a ver)
-		
-		GrupoVectores gv = new GrupoVectores( 10 );
-		gv.anyadir( v );
-		gv.anyadir( v2 );
-		gv.anyadir( v3 );
-		System.out.println( gv );
-		gv.insertar( 1, new Vector2D(50,50) );
-		System.out.println( gv );
-		gv.borrar( 2 );
-		System.out.println( gv );
 	}
 	
 }
