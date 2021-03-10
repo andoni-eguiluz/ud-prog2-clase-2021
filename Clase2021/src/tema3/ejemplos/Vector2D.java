@@ -18,6 +18,7 @@ public class Vector2D {
 	//--------------------------------
 	// NO STATIC
 	//--------------------------------
+	
 	private double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
 	private double y;
 	private Color color;
@@ -41,7 +42,7 @@ public class Vector2D {
 	}
 	
 	// Constructor indirecto 
-	// TODO ¿Debería ser static?
+	// ¿Debe ser static? Sí
 	/** Construye un vector en coords polares
 	 * @param modulo	Longitud del vector
 	 * @param argumento	Ángulo del vector con respecto al eje OX positivo
@@ -140,8 +141,7 @@ public class Vector2D {
 	 * @param color	Color de dibujado del vector
 	 */
 	public void dibujar( VentanaGrafica vent, Color color ) {
-		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), 1.0f, color, 12 );
-		this.color = color;
+		dibujar( vent, color, 1.0f );  // Reutiliza el método base sobrecargado
 	}
 	
 	/** Dibuja un vector en una ventana gráfica, como una flecha desde el origen hasta sus coordenadas
