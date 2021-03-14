@@ -19,9 +19,10 @@ public class Vector2D {
 	// NO STATIC
 	//--------------------------------
 	
-	private double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
-	private double y;
-	private Color color;
+	// Definidos como protegidos para poderse utilizar de forma directa en las clases hijas
+	protected double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
+	protected double y;
+	protected Color color;
 
 	// Este es el constructor implícito, el que hace Java si no hacemos constructor. En este caso también lo programamos
 	/** Construye un nuevo vector 0,0
