@@ -85,9 +85,14 @@ public class EditorDeGraficos {
 					int vASeleccionar = comprobarVectorEnClick( grupo, clickInicial );
 					if (vASeleccionar!=-1) { // Cuando se hace sobre un vector - se selecciona
 						vSel = grupo.get(vASeleccionar);
-					} else {  // Se hace sobre el fondo
-						if (vSel!=null) {  // Mover el vector ya seleccionado
-							vSel.setXY( clickInicial );
+					} else {  // Se hace sobre el fondo o sobre el otro grupo
+						vASeleccionar = comprobarVectorCOEnClick( grupoCO, clickInicial );
+						if (vASeleccionar!=-1) {
+							vSel = grupoCO.get(vASeleccionar);
+						} else {  // Click en el fondo (sobre ningún vector)
+							if (vSel!=null) {  // Mover el vector ya seleccionado
+								vSel.setXY( clickInicial );
+							}
 						}
 					}
 				}
