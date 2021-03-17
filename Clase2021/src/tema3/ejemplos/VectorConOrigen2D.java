@@ -82,6 +82,8 @@ public class VectorConOrigen2D extends Vector2D {
 	// La distancia necesita dos puntos ya que el origen no es ahora 0,0
 	@Override
 	public double distancia(Vector2D punto) {
+		// java.awt.geom.Line2D.Double segmento = new java.awt.geom.Line2D.Double( VECTOR0.getPoint(), getPoint() );
+		// double dist = segmento.ptSegDist( punto.getPoint() );
 		java.awt.geom.Line2D.Double segmento = new java.awt.geom.Line2D.Double( 
 			new java.awt.geom.Point2D.Double( xOrigen, yOrigen )
 			, getPoint() );

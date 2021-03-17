@@ -27,7 +27,6 @@ public class EditorDeGraficos {
 		// Poner esto si se quiere cambiar la posición inicial de la ventana:
 		// vent.getJFrame().setLocation( 2000, 0 );
 		GrupoVectores grupo = new GrupoVectores( NUM_MAX_VECTORES );
-		GrupoVectoresConOrigen grupoCO = new GrupoVectoresConOrigen( NUM_MAX_VECTORES );
 		Point clickInicial = null;
 		vent.setMensaje( "Ctrl-click para añadir vectores, Alt-click para borrar, Click selecciona y otro click mueve" );
 		vent.setDibujadoInmediato( false ); // Preparación de doble buffer
@@ -58,14 +57,6 @@ public class EditorDeGraficos {
 						System.out.println( "Borrado el vector " + vABorrar );
 						grupo.borrar(vABorrar);
 						vSel = null;
-					} else {
-						// Comprobar si hay un vector con origen en ese punto
-						vABorrar = comprobarVectorCOEnClick( grupoCO, clickInicial );
-						if (vABorrar!=-1) {
-							System.out.println( "Borrado el vector " + vABorrar );
-							grupoCO.borrar(vABorrar);
-							vSel = null;
-						}
 					}
 				} else if (vent.isTeclaPulsada( KeyEvent.VK_CONTROL)) {
 					Vector2D vec = new Vector2D( clickInicial.getX(), clickInicial.getY() );
@@ -85,14 +76,9 @@ public class EditorDeGraficos {
 					int vASeleccionar = comprobarVectorEnClick( grupo, clickInicial );
 					if (vASeleccionar!=-1) { // Cuando se hace sobre un vector - se selecciona
 						vSel = grupo.get(vASeleccionar);
-					} else {  // Se hace sobre el fondo o sobre el otro grupo
-						vASeleccionar = comprobarVectorCOEnClick( grupoCO, clickInicial );
-						if (vASeleccionar!=-1) {
-							vSel = grupoCO.get(vASeleccionar);
-						} else {  // Click en el fondo (sobre ningún vector)
-							if (vSel!=null) {  // Mover el vector ya seleccionado
-								vSel.setXY( clickInicial );
-							}
+					} else {  // Click en el fondo (sobre ningún vector)
+						if (vSel!=null) {  // Mover el vector ya seleccionado
+							vSel.setXY( clickInicial );
 						}
 					}
 				}
@@ -101,7 +87,7 @@ public class EditorDeGraficos {
 				// Gestión del drag en lugar del click (añadida variable clickIntermedio)
 				// System.out.println( "Drag de " + clickInicial + " a " + clickIntermedio );
 				VectorConOrigen2D vec = new VectorConOrigen2D( clickInicial.getX(), clickInicial.getY(), clickIntermedio.getX(), clickIntermedio.getY() );
-				grupoCO.anyadir( vec );
+				grupo.anyadir( vec );
 				if (vec.getModulo()<100) {
 					vec.dibujar( vent, Color.RED );
 				} else if (vec.getModulo()<250) {
@@ -110,15 +96,12 @@ public class EditorDeGraficos {
 					vec.dibujar( vent, Color.GREEN );
 				}
 				vSel = null;
-				System.out.println( "Hay guardados " + grupoCO.size() + " vectores con origen" );
+				System.out.println( "Hay guardados " + grupo.size() + " vectores con origen" );
 			}
 			// Repintar la ventana en cada frame:
 			vent.borra();
 			for (int i=0; i<grupo.size(); i++) {
 				grupo.get(i).dibujar(vent, grupo.get(i).getColor() );
-			}
-			for (int i=0; i<grupoCO.size(); i++) {
-				grupoCO.get(i).dibujar(vent, grupoCO.get(i).getColor() );
 			}
 			if (vSel!=null) {
 				vSel.dibujar( vent, vSel.getColor(), 3.0f );

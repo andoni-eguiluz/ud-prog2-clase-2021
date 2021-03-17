@@ -16,26 +16,40 @@ public class ConceptoDeHerencia {
 		rubius.setBeneficios( 2000000.0 );
 		rubius.setDiasEnEnpanya( 20 );
 		System.out.println( rubius + " - " + rubius.calcImpuestos() );
+		Persona p;
+		p = rubius;
+		System.out.println( p.toString() + " -> " + p.calcImpuestos() );
+		System.out.println( rubius.getDirAndorra() );
+		p = ibai;
+		System.out.println( p.calcImpuestos() );
+		
+		Persona[] contribuyentes = new Persona[2];
+		contribuyentes[0] = ibai;
+		contribuyentes[1] = rubius;
+		for (int i=0; i<contribuyentes.length; i++) {
+			System.out.print( contribuyentes[i].toString() + " - " + contribuyentes[i].calcImpuestos() );
+			if (contribuyentes[i] instanceof YoutuberAndorra) {
+				YoutuberAndorra yta = (YoutuberAndorra) contribuyentes[i];
+				System.out.println( "\t" + yta.getDirAndorra() + "*" );
+			} else {
+				System.out.println();
+			}
+		}
 	}
 }
 
-/** Clase padre - ejemplo de herencia
- * @author andoni.eguiluz at ingenieria.deusto.es
- */
-class Youtuber {   // extends Object  (por defecto)
+abstract class Persona {
 	protected String nombre;
 	protected String direccion;
-	protected double beneficios;	
-	public Youtuber(String nombre, String direccion) {
-		super();  // Llama al constructor de la clase padre (Object) - lo hace Java por defecto si no se explicita
-		// Inicialización de atributos propios de la clase:
+	public Persona(String nombre, String direccion) {
+		// super();
 		this.nombre = nombre;
 		this.direccion = direccion;
-		// this.beneficios = 0.0;  // No hace falta porque los atributos double se inicializan a 0.0
 	}
-	public double calcImpuestos() {
-		return 0.5 * beneficios;
-	}
+	/** Calcula los impuestos correspondientes a la persona
+	 * @return	Cálculo de impuestos en euros
+	 */
+	public abstract double calcImpuestos();
 	public String getNombre() {
 		return nombre;
 	}
@@ -47,6 +61,21 @@ class Youtuber {   // extends Object  (por defecto)
 	}
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
+	}
+}
+
+/** Clase padre - ejemplo de herencia
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
+class Youtuber extends Persona {   // extends Object  (por defecto)
+	protected double beneficios;	
+	public Youtuber(String nombre, String direccion) {
+		super( nombre, direccion );  // Llama al constructor de la clase padre (Object) - lo hace Java por defecto si no se explicita
+		// this.beneficios = 0.0;  // No hace falta porque los atributos double se inicializan a 0.0
+	}
+	@Override
+	public double calcImpuestos() {
+		return 0.5 * beneficios;
 	}
 	public double getBeneficios() {
 		return beneficios;
