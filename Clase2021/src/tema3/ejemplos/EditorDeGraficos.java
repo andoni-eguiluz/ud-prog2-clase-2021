@@ -28,7 +28,7 @@ public class EditorDeGraficos {
 		// vent.getJFrame().setLocation( 2000, 0 );
 		GrupoVectores grupo = new GrupoVectores( NUM_MAX_VECTORES );
 		Point clickInicial = null;
-		vent.setMensaje( "Ctrl-click para añadir vectores, Alt-click para borrar, Click selecciona y otro click mueve" );
+		vent.setMensaje( "Ctrl-click crea vector en origen, Drag crea vector, Alt-click borra, Click selecciona, otro click mueve" );
 		vent.setDibujadoInmediato( false ); // Preparación de doble buffer
 		Vector2D vSel = null;
 		// BOOLEANAS en cortocircuito
