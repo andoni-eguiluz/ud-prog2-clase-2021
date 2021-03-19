@@ -329,6 +329,12 @@ public class VentanaConsolaConBotones {
 		tpSalida.setText( "" );
 	}
 	
+	/** Escribe en la ventana un salto de línea
+	 */
+	public void println() {
+		print( "\n" );
+	}
+	
 	/** Escribe en la ventana una línea
 	 * @param s	String a visualizar en la ventana
 	 */
