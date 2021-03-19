@@ -72,7 +72,7 @@ public class Pong {
 	private void init() {
 		Random random = new Random();
 		vent = new VentanaGrafica( ANCHO_VENTANA, ALTO_VENTANA, "Juego de pong" );
-		vent.getJFrame().setLocation(2000,20); // TODO Quitar (Solo si se quiere ver en la segunda ventana (a la derecha))
+		// vent.getJFrame().setLocation(2000,20); // TODO Quitar (Solo si se quiere ver en la segunda ventana (a la derecha))
 		objsPong = new ArrayList<Figura>();  // V2: Lista de todos los objetos (polimórfica)
 		// Las bolas (V2: Varias)
 		bolas = new ArrayList<Circulo>();
