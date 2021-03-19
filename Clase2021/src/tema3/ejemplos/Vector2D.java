@@ -1,14 +1,13 @@
 package tema3.ejemplos;
 
 import java.awt.Color;
-import java.awt.Point;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
 /** Clase para crear objetos de tipo vector en 2 dimensiones
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
-public class Vector2D {
+public class Vector2D extends Grafico {
 
 	//--------------------------------
 	// STATIC
@@ -19,18 +18,13 @@ public class Vector2D {
 	// NO STATIC
 	//--------------------------------
 	
-	// Definidos como protegidos para poderse utilizar de forma directa en las clases hijas
-	protected double x; //  = 0.0; por omisión (valor 0 para los numéricos, char 0, false para los booleans)
-	protected double y;
-	protected Color color;
 
 	// Este es el constructor implícito, el que hace Java si no hacemos constructor. En este caso también lo programamos
 	/** Construye un nuevo vector 0,0
 	 */
 	public Vector2D() {
+		super( 0.0, 0.0 );
 		// Constructor por defecto x y = 0
-		// setX( 0.0 );  Podría hacerse pero en este caso no hace falta al ser el valor por defecto y no haber control de error en el setX
-		// setY( 0.0 );  Podría hacerse pero en este caso no hace falta al ser el valor por defecto y no haber control de error en el setY
 	}
 	
 	/** Construye un vector en coords cartesianas
@@ -38,8 +32,7 @@ public class Vector2D {
 	 * @param y	Coord y
 	 */
 	public Vector2D( double x, double y ) {
-		this.setX( x ); // this.x = x;
-		this.setY( y ); // this.y = y;
+		super( x, y );
 	}
 	
 	// Constructor indirecto 
@@ -90,45 +83,6 @@ public class Vector2D {
 		return Math.atan2(y, x);
 	}
 	
-	/** Devuelve la coordenada x
-	 * @return	Coordenada x
-	 */
-	public double getX() {
-		return this.x;
-	}
-	
-	/** Cambia la coordenada x
-	 * @param x	Nuevo valor de coordenada x
-	 */
-	public void setX( double x ) {
-		this.x = x;
-	}
-	
-	/** Devuelve la coordenada y
-	 * @return	Coordenada y
-	 */
-	public double getY() {
-		return y;
-	}
-
-	/** Cambia la coordenada y
-	 * @param x	Nuevo valor de coordenada y
-	 */
-	public void setY(double y) {
-		this.y = y;
-	}
-	
-	public void setXY( Point puntoXY ) {
-		setX( puntoXY.getX() );
-		setY( puntoXY.getY() );
-	}
-
-	/** Convierte el vector a String, en formato (coord.x,coord.y)
-	 */
-	public String toString() {
-		return "(" + x + "," + y + ")";
-	}
-	
 	/** Escala un vector
 	 * @param escala	Escala a aplicar, siendo 1.0 el 100%, menores que 1 más pequeños (0.5 la mitad), mayores que 1 más grandes (2.0 el doble)
 	 */
@@ -137,14 +91,8 @@ public class Vector2D {
 		y *= escala;
 	}
 	
-	/** Dibuja un vector en una ventana gráfica, como una flecha desde el origen hasta sus coordenadas
-	 * @param vent	Ventana en la que dibujar el vector
-	 * @param color	Color de dibujado del vector
-	 */
-	public void dibujar( VentanaGrafica vent, Color color ) {
-		dibujar( vent, color, 1.0f );  // Reutiliza el método base sobrecargado
-	}
-	
+
+	@Override
 	/** Dibuja un vector en una ventana gráfica, como una flecha desde el origen hasta sus coordenadas
 	 * @param vent	Ventana en la que dibujar el vector
 	 * @param color	Color de dibujado del vector
@@ -153,13 +101,6 @@ public class Vector2D {
 	public void dibujar( VentanaGrafica vent, Color color, float grosor ) {
 		vent.dibujaFlecha(0.0, 0.0, this.getX(), this.getY(), grosor, color, 12 );
 		this.color = color;
-	}
-	
-	/** Devuelve el último color en el que se ha dibujado el vector
-	 * @return	color del último dibujado, null si nunca se ha dibujado
-	 */
-	public Color getColor() {
-		return color;
 	}
 	
 	// Métodos de picking
@@ -182,14 +123,5 @@ public class Vector2D {
 	public java.awt.geom.Point2D getPoint() {
 		return new java.awt.geom.Point2D.Double( x, y );
 	}
-	
-	/** Comprueba si un punto del plano toca con el vector
-	 * @param punto	Punto a comprobar
-	 * @param margen	Margen de distancia con el que se entiende que hay contacto (por ejemplo 2.0 - 2 o menos píxels de distancia)
-	 * @return	true si el punto toca con el vector dentro del margen indicado, false en caso contrario
-	 */
-	public boolean toca( Vector2D punto, double margen ) {
-		return distancia( punto ) <= margen;
-	}
-	
+		
 }
