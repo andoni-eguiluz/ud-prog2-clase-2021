@@ -1,4 +1,4 @@
-package tema3.juegoBolas;
+package tema3.ejemplos.juegoBolas;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -53,7 +53,7 @@ public abstract class ObjetoJuego {
 	 */
 	public static void main(String[] args) {
 		// ObjetoJuego oj = new ObjetoJuego();  // Esto ya no se puede hacer cuando la clase es abstracta
-		ObjetoJuego oj = new tema3.juegoBolas.Pelota(10, 10, 10, Color.red);  // Polimorfismo de datos
+		ObjetoJuego oj = new tema3.ejemplos.juegoBolas.Pelota(10, 10, 10, Color.red);  // Polimorfismo de datos
 		System.out.println( oj.getX() );
 		System.out.println( oj );  // ¿A qué toString se llama?
 		Pelota p = (Pelota) oj;

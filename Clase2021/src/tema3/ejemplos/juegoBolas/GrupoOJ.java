@@ -1,4 +1,4 @@
-package tema3.juegoBolas;
+package tema3.ejemplos.juegoBolas;
 
 import java.awt.Point;
 
