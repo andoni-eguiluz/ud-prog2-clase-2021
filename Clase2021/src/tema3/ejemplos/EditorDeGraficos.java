@@ -91,6 +91,12 @@ public class EditorDeGraficos {
 					double radio = Math.sqrt( (clickInicial.x-clickIntermedio.x)*(clickInicial.x-clickIntermedio.x) + (clickInicial.y-clickIntermedio.y)*(clickInicial.y-clickIntermedio.y));
 					Circulo c = new Circulo( clickInicial.x, clickInicial.y, radio, new Color(0, 255, 0) );
 					grupo.add( c );
+				} else if (vent.getCodTeclaQueEstaPulsada()==KeyEvent.VK_R) {
+						// Crear rectángulo
+						double distX = Math.abs( clickInicial.x-clickIntermedio.x );
+						double distY = Math.abs( clickInicial.y-clickIntermedio.y );
+						Rectangulo r = new Rectangulo( clickInicial.x, clickInicial.y, distX*2, distY*2, Color.CYAN );
+						grupo.add( r );
 				} else {
 					// Crear vector con origen
 					VectorConOrigen2D vec = new VectorConOrigen2D( clickInicial.getX(), clickInicial.getY(), clickIntermedio.getX(), clickIntermedio.getY() );

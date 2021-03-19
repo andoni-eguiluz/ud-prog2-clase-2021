@@ -4,11 +4,19 @@ import java.awt.Color;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
+/** Gráfico de tipo círculo
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 public class Circulo extends Grafico {
 
 	protected double radio;
 	
-	
+	/** Crea un nuevo círculo
+	 * @param x	Coordenada x del centro
+	 * @param y	Coordenada y del centro
+	 * @param radio	Radio
+	 * @param color	Color
+	 */
 	public Circulo( double x, double y, double radio, Color color ) {
 		super(x,y);
 		this.radio = radio;
