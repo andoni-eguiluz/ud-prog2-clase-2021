@@ -102,7 +102,7 @@ public class Circulo extends Figura {
 	 */
 	public void dibuja( VentanaGrafica v ) {
 		v.dibujaCirculo( x, y, radio, 2f, color ); // Dibuja el círculo debajo
-		v.dibujaImagen( "/tema3/img/balon.png", x, y, 2*radio/50, rot, 1.0f );  // Y el balón encima (si no existiera el gráfico, se vería solo el círculo)
+		v.dibujaImagen( "balon.png", x, y, 2*radio/50, rot, 1.0f );  // Y el balón encima (si no existiera el gráfico, se vería solo el círculo)
 	}
 	
 	/** Comprueba si el círculo se sale por la vertical de la ventana
