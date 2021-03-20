@@ -76,12 +76,12 @@ public class GestorTareas {
 	
 	// Proceso de inicializar datos de la ventana de trabajo
 	private void initDatos() {
-		listaObjetos.add( new Trabajador( 450, 200, ventana, "Chris", "/tema3/ejercicios/gestorTareas/img/chris.png" ) );
-		listaObjetos.add( new Trabajador( 800, 200, ventana, "Julia", "/tema3/ejercicios/gestorTareas/img/julia.png" ) );
-		listaObjetos.add( new Trabajador( 450, 600, ventana, "Natalie", "/tema3/ejercicios/gestorTareas/img/natalie.png" ) );
-		listaObjetos.add( new Trabajador( 800, 600, ventana, "Jim", "/tema3/ejercicios/gestorTareas/img/jim.png" ) );
-		botonNueva = new Boton( 40, 40, ventana, "NUEVA", "/tema3/ejercicios/gestorTareas/img/add.png" );
-		botonTrash = new Boton( 40, 760, ventana, "PAPELERA", "/tema3/ejercicios/gestorTareas/img/trash.png" );
+		listaObjetos.add( new Trabajador( 450, 200, ventana, "Chris", "img/chris.png" ) );
+		listaObjetos.add( new Trabajador( 800, 200, ventana, "Julia", "img/julia.png" ) );
+		listaObjetos.add( new Trabajador( 450, 600, ventana, "Natalie", "img/natalie.png" ) );
+		listaObjetos.add( new Trabajador( 800, 600, ventana, "Jim", "img/jim.png" ) );
+		botonNueva = new Boton( 40, 40, ventana, "NUEVA", "img/add.png" );
+		botonTrash = new Boton( 40, 760, ventana, "PAPELERA", "img/trash.png" );
 		listaObjetos.add( botonNueva );
 		listaObjetos.add( botonTrash );
 	}
