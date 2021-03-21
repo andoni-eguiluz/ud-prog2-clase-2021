@@ -2,16 +2,19 @@ package tema4;
 
 import java.util.ArrayList;
 
+/** Ejemplo para entender el concepto de interfaces
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 public class ConceptoInterfaces {
 
 	public static void main(String[] args) {
-		ArrayList<Mecanismo> listaMecs = new ArrayList<>();
-		listaMecs.add( new Sensor( "Sensor1" ) );
-		listaMecs.add( new Sensor( "Sensor2" ) );
+		ArrayList<Mecanismo> listaMecs = new ArrayList<>();  // arraylist polimórfico
+		listaMecs.add( new Sensor( "Temp" ) );
+		listaMecs.add( new Sensor( "Luz" ) );
 		listaMecs.add( new Blindaje( "Carcasa", 10 ) );
 		listaMecs.add( new Micro( "Intel Core 2 Quad Q6600", 2.4*1024 ) );
 		System.out.println( listaMecs );
-		// ¿Cómo añado un test electrónico a mi lista de mecanismos? ¿Con muchos ifs o con unos pocos?
+		// ¿Cómo añado un test de reparación electrónica a mi lista de mecanismos? ¿Con muchos ifs o con unos pocos?
 	}
 
 }
@@ -20,10 +23,6 @@ abstract class Mecanismo {
 	protected String nombre;
 	public Mecanismo( String nombre ) {
 		this.nombre = nombre;
-	}
-	@Override
-	public String toString() { 
-		return "Soy un mecanismo"; 
 	}
 }
 
@@ -36,7 +35,7 @@ class Sensor extends Mecanismo {
 	public double getMedicion() { return medicion; }
 	@Override
 	public String toString() { 
-		return "Soy un sensor que mide " + getMedicion(); 
+		return "Sensor " + nombre + "=" + String.format( "%4.2f", getMedicion() ); 
 	}
 }
 
@@ -54,7 +53,7 @@ class Blindaje extends Mecanismo {
 	}
 	@Override
 	public String toString() { 
-		return "Soy un blindaje con dureza " + dureza; 
+		return "Blindaje con dureza " + dureza; 
 	}
 }
 
@@ -69,7 +68,7 @@ class Micro extends Mecanismo {
 	}
 	@Override
 	public String toString() { 
-		return "Soy un micro a " + getmHz() + " MHz"; 
+		return "Micro a " + getmHz() + " MHz"; 
 	}
 }
 
