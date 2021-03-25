@@ -4,9 +4,9 @@ import java.awt.Color;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
-public class VectorConOrigen2D extends Vector2D {
-	protected double xOrigen;
-	protected double yOrigen;
+public class VectorConOrigen2D extends Vector2D implements Movible {
+	protected double xOrigen;  // Origen x del vector
+	protected double yOrigen;  // Origen y del vector
 
 	// Constructores
 	
@@ -129,6 +129,16 @@ public class VectorConOrigen2D extends Vector2D {
 		VectorConOrigen2D ret = new VectorConOrigen2D( xOrigen, yOrigen, 
 			xOrigen + modulo * Math.cos(argumento), yOrigen + modulo * Math.sin(argumento) );
 		return ret;
+	}
+	
+	@Override
+	public void mover(double x, double y) {
+		double difX = x - this.xOrigen;
+		double difY = y - this.yOrigen;
+		xOrigen = x;
+		yOrigen = y;
+		setX( this.x + difX );
+		setY( this.y + difY );
 	}
 	
 	

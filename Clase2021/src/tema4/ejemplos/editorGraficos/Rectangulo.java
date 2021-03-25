@@ -4,10 +4,11 @@ import java.awt.Color;
 
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
-public class Rectangulo extends Grafico {
+public class Rectangulo extends Grafico implements Movible, RellenableColor {
 
 	protected double ancho;
 	protected double alto;
+	protected Color colorRelleno;  // Color de relleno del rectángulo
 	
 	/** Crea un nuevo rectángulo
 	 * @param x	Coordenada x del centro
@@ -51,5 +52,15 @@ public class Rectangulo extends Grafico {
 		}
 	}
 
+	@Override
+	public void mover( double x, double y ) {
+		setX( x );
+		setY( y );
+	}
+	
+	@Override
+	public void setColorRelleno( Color colorRelleno ) {
+		this.colorRelleno = colorRelleno;
+	}
 	
 }

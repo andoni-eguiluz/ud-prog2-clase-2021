@@ -35,6 +35,23 @@ public class EditorDeGraficos {
 		// log1 || log2 || log3 ...   cuando cualquiera sea TRUE la condición es TRUE
 		// log1 && log2 && log3 ... cuando cualquiera sea FALSE la condición es FALSE
 		while (!vent.estaCerrada() && (clickInicial==null || (clickInicial.getX() < 580 || clickInicial.getY() < 390))) {
+			if (vent.isTeclaPulsada( KeyEvent.VK_C ) && vent.isTeclaPulsada( KeyEvent.VK_CONTROL )) {
+				// System.out.println( "Ctrl+C");
+				Color color = vent.eligeColor( "Cambia el color de " + grafSel );
+				if (grafSel!=null && color!=null) {
+					grafSel.setColor( color );
+				}
+			}
+			if (vent.isTeclaPulsada( KeyEvent.VK_R ) && vent.isTeclaPulsada( KeyEvent.VK_CONTROL )) {
+				// System.out.println( "Ctrl+R");
+				if (grafSel!=null && grafSel instanceof RellenableColor) {
+					Color color = vent.eligeColor( "Cambia el color de relleno de " + grafSel );
+					if (color!=null) {
+						RellenableColor rc = (RellenableColor) grafSel;
+						rc.setColorRelleno( color );
+					}
+				}
+			}
 			clickInicial = vent.getRatonPulsado();
 			Point clickFinal = clickInicial;
 			Point clickIntermedio = clickInicial;
@@ -92,7 +109,9 @@ public class EditorDeGraficos {
 						grafSel = grupo.get(gASeleccionar);
 					} else {  // Click en el fondo (sobre ningún gráfico)
 						if (grafSel!=null) {  // Mover el gráfico ya seleccionado
-							grafSel.setXY( clickInicial );
+							if (grafSel instanceof Reorientable) {
+								grafSel.setXY( clickInicial );
+							}
 						}
 					}
 				}

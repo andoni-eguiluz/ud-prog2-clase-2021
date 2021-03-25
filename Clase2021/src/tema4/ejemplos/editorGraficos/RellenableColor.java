@@ -1,0 +1,7 @@
+package tema4.ejemplos.editorGraficos;
+
+import java.awt.Color;
+
+public interface RellenableColor {
+	void setColorRelleno( Color colorRelleno );
+}

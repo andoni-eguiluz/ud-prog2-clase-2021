@@ -7,9 +7,10 @@ import utils.ventanas.ventanaBitmap.VentanaGrafica;
 /** Gráfico de tipo círculo
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
-public class Circulo extends Grafico {
+public class Circulo extends Grafico implements Movible, RellenableColor {
 
 	protected double radio;
+	protected Color colorRelleno; // Color de relleno del círculo
 	
 	/** Crea un nuevo círculo
 	 * @param x	Coordenada x del centro
@@ -21,11 +22,16 @@ public class Circulo extends Grafico {
 		super(x,y);
 		this.radio = radio;
 		this.color = color;
+		// Ojo, que colorRelleno está inicializado a null (tenerlo en cuenta al dibujar)
 	}
 	
 	@Override
 	public void dibujar(VentanaGrafica vent, Color color, float grosor) {
-		vent.dibujaCirculo( x, y, radio, grosor, color );
+		if (colorRelleno == null) {
+			vent.dibujaCirculo( x, y, radio, grosor, color );
+		} else {
+			vent.dibujaCirculo( x, y, radio, grosor, color, colorRelleno );
+		}
 	}
 
 	@Override
@@ -34,5 +40,15 @@ public class Circulo extends Grafico {
 		return dist - radio;  // Puede ser negativa
 	}
 
+	@Override
+	public void mover(double x, double y) {
+		this.setX( x );
+		this.setY( y );
+	}
+
+	@Override
+	public void setColorRelleno( Color colorRelleno ) {
+		this.colorRelleno = colorRelleno;
+	}
 	
 }
