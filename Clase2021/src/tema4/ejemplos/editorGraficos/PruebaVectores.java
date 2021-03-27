@@ -31,5 +31,10 @@ public class PruebaVectores {
 		System.out.println( "Suma de vector2d " + v1 + " con " + v3 + " = " + v1.sumar( v3 ) );
 		System.out.println( "Suma de vector con origen " + v2 + " con " + v3 + " = " + v2.sumar( v3 ) );
 		System.out.println( "Esto hay que arreglarlo!");
+		// Prueba de equals (observar la codificación de equals de la clase VectorConOrigen)
+		VectorConOrigen2D v4 = new VectorConOrigen2D( 100, 50, 110, 56 );
+		VectorConOrigen2D v5 = new VectorConOrigen2D( 100, 50, 110, 56 );
+		System.out.println( "V4 == V5? " + (v4==v5) );
+		System.out.println( "V4 equals V5? " + v4.equals(v5) );
 	}
 }

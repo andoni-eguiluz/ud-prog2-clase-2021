@@ -116,6 +116,19 @@ public class VectorConOrigen2D extends Vector2D implements Movible {
 		return "(" + xOrigen + "," + yOrigen + ") -> " + super.toString();
 	}
 	
+	// Ejemplo de codificación de equals - teniendo en cuenta el polimorfismo
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof VectorConOrigen2D) {
+			VectorConOrigen2D v2 = (VectorConOrigen2D) obj;
+			// Devolvemos la igualdad dependiendo de lo que definamos que significa que dos objetos sean iguales para la lógica del programa
+			return v2.x==x && v2.y==y && v2.xOrigen==xOrigen && v2.yOrigen==yOrigen && v2.color.equals(color);
+		} else { // Si es de otra clase NO son equals
+			return false;
+		}
+	}
+	
 	// Constructor indirecto estático - NO SE HEREDA luego hay que hacer uno completamente nuevo
 
 	/** Construye un vector en coords polares
