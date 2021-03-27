@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+/** Ejemplo de uso de interfaz comparable para ordenar cualquier array que tenga objetos que implementen ese interfaz
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 public class EjemploComparable {
 	public static void main(String[] args) {
 		Date[] a1 = new Date[3];

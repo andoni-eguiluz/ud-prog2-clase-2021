@@ -22,6 +22,8 @@ public class EjemploSerializable {
 		l = leeDeFichero();
 		System.out.println( "Leído de fichero: " + l );
 	}
+	
+	// Método para escribir datos a ficheros
 	private static void escribeAFichero( ArrayList<MiDato> l ) throws Exception {
 		FileOutputStream fout = new FileOutputStream("test.dat");
 		ObjectOutputStream oos = new ObjectOutputStream(fout);
@@ -29,6 +31,7 @@ public class EjemploSerializable {
 		oos.close();
 	}
 
+	// Método para leer datos de ficheros
 	private static ArrayList<MiDato> leeDeFichero() throws Exception {
 		FileInputStream fin = new FileInputStream("test.dat");
 		ObjectInputStream ois = new ObjectInputStream(fin);
