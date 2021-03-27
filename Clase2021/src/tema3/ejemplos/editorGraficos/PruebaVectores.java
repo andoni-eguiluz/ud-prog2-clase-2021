@@ -1,4 +1,4 @@
-package tema3.ejemplos;
+package tema3.ejemplos.editorGraficos;
 
 /** Clase de prueba de la herencia de vectores
  * @author andoni.eguiluz at ingenieria.deusto.es

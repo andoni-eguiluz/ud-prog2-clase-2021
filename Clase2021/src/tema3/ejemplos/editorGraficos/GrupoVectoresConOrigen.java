@@ -1,4 +1,4 @@
-package tema3.ejemplos;
+package tema3.ejemplos.editorGraficos;
 
 import java.awt.Color;
 import java.util.ArrayList;
