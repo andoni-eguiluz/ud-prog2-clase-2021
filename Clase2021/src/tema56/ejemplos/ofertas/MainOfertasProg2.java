@@ -12,7 +12,7 @@ public class MainOfertasProg2 {
 
 	private static OfertasProg2 sistema;       // Sistema de trabajo
 	private static VentanaConsolaConBotones ventana;  // Ventana de interacción
-	private static final String NOM_FICHERO = "ofertasProg2.dat";  // Ruta relativa - carpeta raíz del proyecto
+	private static final String NOM_FICHERO = "ofertasProg2v2.dat";  // Ruta relativa - carpeta raíz del proyecto
 	
 	/** Método principal - crea un sistema nuevo y lanza la interacción 
 	 * @param args	No utilizado
