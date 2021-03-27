@@ -42,7 +42,7 @@ public class Estrella extends ObjetoJuego {
 	public void dibuja( VentanaGrafica v ) {
 		// v.dibujaImagen( "ud-estrella.png", x, y, tamanyo, tamanyo, 1.0, 0, 1.0f );
 		// Cambio de dibujado con animación
-		v.dibujaImagen( "/tema3/img/ud-estrella.png", x, y, tamanyo, tamanyo, zoom, rotacion, transparencia );
+		v.dibujaImagen( "img/ud-estrella.png", x, y, tamanyo, tamanyo, zoom, rotacion, transparencia );
 	}
 	
 	@Override

@@ -1,11 +1,11 @@
-package tema3.ejemplos.runner;
+package tema4.ejemplos.runner;
 import java.awt.Color;
-
+import java.util.ArrayList;
 import utils.ventanas.ventanaBitmap.VentanaGrafica;
 
 /** Clase que permite crear y gestionar bonus y dibujarlos en una ventana gráfica
  */
-public class Bonus extends ObjetoEspacial {
+public class Bonus extends ObjetoEspacial implements Rotable, Salible, Chocable {
 	
 	// =================================================
 	// PARTE DE OBJETO (NO STATIC)
@@ -14,6 +14,8 @@ public class Bonus extends ObjetoEspacial {
 	private double radio;                // Radio de bonus
 	private double rot = 0.0;            // Rotación del bonus (para hacer animación)
 	private double tiempoProteccionSgs;  // Tiempo de protección en segundos
+	// Atributo para el interfaz chocable
+	private final BoundingCircle BC_BONUS = new BoundingCircle( 0.0, 0.0, 0.0 );
 
 	/** Crea un nuevo bonus
 	 * @param radio	Píxels de radio del bonus (debe ser mayor que 0)
@@ -25,7 +27,31 @@ public class Bonus extends ObjetoEspacial {
 		super( x, y );
 		this.radio = radio;
 		this.tiempoProteccionSgs = tiempoProteccion;
+		BC_BONUS.setX( x );
+		BC_BONUS.setY( y );
+		BC_BONUS.setRadio( radio );
 	}
+	
+	// Métodos de implementación y redefinidos para choque (cambian el círculo de choque cuando cambian los datos de la nave)
+	
+	@Override
+	public void setX(double x) {
+		super.setX(x);
+		BC_BONUS.setX( x );
+	}
+	
+	@Override
+	public void setY(double y) {
+		super.setY(y);
+		BC_BONUS.setY( y );
+	}
+	
+	@Override
+	public Envolvente getEnvolvente() {
+		return BC_BONUS;
+	}
+	
+	// Sets y gets
 	
 	/** Devuelve el radio del bonus
 	 * @return	Radio en píxels
@@ -39,6 +65,7 @@ public class Bonus extends ObjetoEspacial {
 	 */
 	public void setRadio(double radio) {
 		this.radio = radio;
+		BC_BONUS.setRadio( radio );  // Cambia el bounding circle
 	}
 
 	/** Devuelve el tiempo de protección del bonus
@@ -73,12 +100,17 @@ public class Bonus extends ObjetoEspacial {
 	
 	/** Comprueba si el bonus se sale completamente por el lado izquierdo de la ventana
 	 * @param v	Ventana de comprobación
-	 * @return	true si se está saliendo completamente por la izquierda, false en caso contrario
+	 * @return	true si se está saliendo completamente por izquierda, false en caso contrario
 	 */
 	public boolean seSalePorLaIzquierda( VentanaGrafica v ) {
 		return x+radio<=0;
 	}
 
+	@Override
+	public void sal( ArrayList<ObjetoEspacial> l ) {
+		l.remove( this );
+	}
+	
 	@Override
 	public String toString() {
 		return "bonus " + super.toString() + " (" + radio + ")";

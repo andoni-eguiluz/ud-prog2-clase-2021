@@ -107,16 +107,16 @@ public class Nave extends ObjetoEspacial {
 		} else if (bajando) {
 			angulo = +0.2;  // la nave quiere dibujarse bajando 0.2 radianes
 		}
-		String imagen = "/tema3/img/nave.png";    // Dibujo de nave normal
+		String imagen = "img/nave.png";    // Dibujo de nave normal
 		if (vX>0.0) {
-			imagen = "/tema3/img/nave-prop.png";  // Si la nave avanza gráfico con propulsores traseros
+			imagen = "img/nave-prop.png";  // Si la nave avanza gráfico con propulsores traseros
 		} else if (vX<0.0) {
-			imagen = "/tema3/img/nave-frena.png"; // Si la nave frena gráfico con propulsores delanteros
+			imagen = "img/nave-frena.png"; // Si la nave frena gráfico con propulsores delanteros
 		}
 		v.dibujaImagen( imagen, x, y, 50.0/500.0, angulo, 1.0f );  // el gráfico tiene 500 píxels y la nave quiere dibujarse con 50
 		if (segsProteccion>0.0) {
 			float transp = 1.0f;
-			imagen = "/tema3/img/escudo.png";
+			imagen = "img/escudo.png";
 			if (segsProteccion<2.0) transp = (float) (segsProteccion/2.0);  // Los últimos 2 segundos decrece visualmente la opacidad del escudo
 			v.dibujaImagen( imagen, x, y, 50.0/500.0, 0.0, transp );  // burbuja escudo (transparente creciente en el último segundo)
 		}

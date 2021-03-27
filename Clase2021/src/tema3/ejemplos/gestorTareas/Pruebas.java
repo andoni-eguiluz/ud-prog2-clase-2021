@@ -48,10 +48,10 @@ public class Pruebas {
 	
 	private static void pruebaTrabajadores() {
 		VentanaGrafica v = new VentanaGrafica( 1000, 800, "Prueba de trabajadores" );
-		Trabajador t1 = new Trabajador( 200, 200, v, "Chris", "/tema3/ejercicios/gestorTareas/img/chris.png" );
+		Trabajador t1 = new Trabajador( 200, 200, v, "Chris", "img/chris.png" );
 		t1.dibujar();
-		Trabajador t2 = new Trabajador( v, "Julia", "/tema3/ejercicios/gestorTareas/img/julia.png" );
-		Trabajador t3 = new Trabajador( v, "Natalie", "/tema3/ejercicios/gestorTareas/img/natalie.png" );
+		Trabajador t2 = new Trabajador( v, "Julia", "img/julia.png" );
+		Trabajador t3 = new Trabajador( v, "Natalie", "img/natalie.png" );
 		t3.mover( 600,  400 );
 		t2.dibujar();
 		t3.dibujar();
