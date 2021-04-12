@@ -5,7 +5,6 @@ import java.util.ArrayList;
 /** Clase de ejemplo de sacar equipos de liga de fútbol desde una web (marca).
  * Utilizado para practicar con Java Collections
  * @author andoni.eguiluz at ingenieria.deusto.es
- *
  */
 public class SacaEquipos {
 
