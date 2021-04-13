@@ -18,7 +18,17 @@ public class SacaEquipos {
 
 	// Método para hacer pruebas de Java Collections con los equipos de la liga de fútbol
 	private static void pruebasDeJC( String equipo ) {
-		
+		// Resolver los siguientes puntos
+		// 1.- Meter todos los equipos tal cual aparecen en una lista y visualizarla
+		// 2.- Meter todos los equipos tal cual aparecen en una lista SOLO si no estaban ya en ella. Visualizarla
+		// 3.- Meter todos los equipos en un conjunto SIN ORDEN. Visualizarlos
+		// 3b.- Lo mismo en lugar de con string con una clase Equipo (que contenga el nombre). hashCode + equals
+		// 4.- Meter todos los equipos en un conjunto CON ORDEN (alfabético). Visualizarlos
+		// 4b.- Lo mismo en lugar de con string con una clase Equipo (que contenga el nombre). comparable
+		// 5.- Usar un mapa para contar el número de veces que aparece cada equipo (Integer)
+		// 6.- Usar un mapa para contar el número de veces que aparece cada equipo (Entero MUTABLE)
+		// 7.- Usar un mapa para sacar una lista de todos los enfrentamientos de cada equipo
+		// 8.- Usar un mapa para sacar una lista de todos los enfrentamientos de cada equipo (con objeto Partido)
 	}
 	
 	private static void procesa( ArrayList<String> lHtml ) {
