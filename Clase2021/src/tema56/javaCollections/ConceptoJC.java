@@ -51,8 +51,8 @@ public class ConceptoJC {
 		System.out.println( ts );
 		
 		// MAPAS - diccionarios - clave / valor
-		HashMap<String,Integer> m1 = new HashMap<>();
-		TreeMap<String,Integer> m2 = new TreeMap<>();
+		HashMap<Integer,String> m1 = new HashMap<>();
+		TreeMap<Integer,String> m2 = new TreeMap<>();
 		
 	}
 }
