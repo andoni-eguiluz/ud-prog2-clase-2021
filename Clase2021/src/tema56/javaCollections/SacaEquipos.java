@@ -1,6 +1,6 @@
 package tema56.javaCollections;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /** Clase de ejemplo de sacar equipos de liga de fútbol desde una web (marca).
  * Utilizado para practicar con Java Collections
@@ -34,16 +34,17 @@ public class SacaEquipos {
 	private static void procesa( ArrayList<String> lHtml ) {
 		System.out.println( "Html encontrado:" );
 		for (String html : lHtml) {
-			System.out.println( html );
+//			System.out.println( html );
 		}
 		// Proceso de cada nombre de equipo
 		System.out.println();
 		System.out.println( "Equipos encontrados:" );
 		for (String html : lHtml) {
 			String equipo = sacaEquipoDeHtml( html );
-			System.out.println( equipo );
+//			System.out.println( equipo );
 			pruebasDeJC( equipo );
 		}
+		
 	}
 	
 	private static String sacaEquipoDeHtml( String html ) {
