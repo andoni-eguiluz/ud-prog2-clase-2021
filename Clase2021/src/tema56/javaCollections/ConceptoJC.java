@@ -2,7 +2,7 @@ package tema56.javaCollections;
 
 import java.util.*;
 
-/** Ejemplo de Java Collections
+/**  Ejemplo de Java Collections
  * Colecciones de datos más esenciales
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
