@@ -49,11 +49,40 @@ public class ConceptoJC {
 		System.out.println( lis );
 		System.out.println( hs );
 		System.out.println( ts );
+		for (Integer val : ts) {
+			System.out.println( val );
+		}
 		
 		// MAPAS - diccionarios - clave / valor
 		HashMap<Integer,String> m1 = new HashMap<>();
 		TreeMap<Integer,String> m2 = new TreeMap<>();
-		
+		// 3 - Andoni / 7 - Elena / 16 - Aintzane / 33 - Manuel
+		m1.put( 3 , "Andoni" );
+		m1.put( 7,  "Elena" );
+		m1.put( 16, "Aintzane" );
+		m1.put( 33, "Manuel" );
+		m1.put( 16, "Amaia" );
+		System.out.println( m1 );
+		m2.put( 3 , "Andoni" );
+		m2.put( 7,  "Elena" );
+		m2.put( 16, "Aintzane" );
+		m2.put( 33, "Manuel" );
+		m2.remove( 33 );
+		System.out.println( m2 );
+		System.out.println( m1.get( 16 ) );
+		System.out.println( m1.get( 15 ) );
+		System.out.println( m1.containsKey( 15 ) );
+		System.out.println( m1.containsValue( "Emilio" ) );
+		System.out.println( "Recorrido:");
+		for (Integer clave : m1.keySet()) {
+			System.out.println( clave + " - " + m1.get(clave) );
+		}
+		for (String valor : m1.values()) {
+			System.out.println( valor );
+		}
+		// Hash
+		String email = "andoni.eguiluz@deusto.es";
+		// System.out.println( Math.abs(email.hashCode()) % 1000 );
 	}
 }
 
