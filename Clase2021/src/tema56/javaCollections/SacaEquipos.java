@@ -14,46 +14,22 @@ public class SacaEquipos {
 				"<img src=\"https://e00-marca.uecdn.es/assets/", 
 				"iso-8859-15" );
 		procesa( l );
-		cierre();
 	}
 
-	private static ArrayList<String> l1 = new ArrayList<String>();
-	private static ArrayList<String> l2 = new ArrayList<String>();
-	private static HashSet<String> s3 = new HashSet<String>();
-	private static TreeSet<String> s4 = new TreeSet<String>();
-	private static HashSet<Equipo> s3b = new HashSet<Equipo>();
-	
 	// Método para hacer pruebas de Java Collections con los equipos de la liga de fútbol
 	private static void pruebasDeJC( String equipo ) {
 		// System.out.println( equipo );
 		// Resolver los siguientes puntos
 		// 1.- Meter todos los equipos tal cual aparecen en una lista y visualizarla
-		l1.add( equipo );
 		// 2.- Meter todos los equipos tal cual aparecen en una lista SOLO si no estaban ya en ella. Visualizarla
-		if (!l2.contains(equipo)) {
-			l2.add( equipo );
-		}
 		// 3.- Meter todos los equipos en un conjunto SIN ORDEN. Visualizarlos
-		s3.add( equipo );
 		// 3b.- Lo mismo en lugar de con string con una clase Equipo (que contenga el nombre). hashCode + equals
-		Equipo eq = new Equipo( equipo );
-		System.out.println( eq + " - " + eq.hashCode() );
-		s3b.add( eq );
 		// 4.- Meter todos los equipos en un conjunto CON ORDEN (alfabético). Visualizarlos
-		s4.add( equipo );
 		// 4b.- Lo mismo en lugar de con string con una clase Equipo (que contenga el nombre). comparable
 		// 5.- Usar un mapa para contar el número de veces que aparece cada equipo (Integer)
 		// 6.- Usar un mapa para contar el número de veces que aparece cada equipo (Entero MUTABLE)
 		// 7.- Usar un mapa para sacar una lista de todos los enfrentamientos de cada equipo
 		// 8.- Usar un mapa para sacar una lista de todos los enfrentamientos de cada equipo (con objeto Partido)
-	}
-	
-	private static void cierre() {
-		System.out.println( l1.size() + " - " + l1 );
-		System.out.println( l2.size() + " - " + l2 );
-		System.out.println( s3.size() + " - " + s3 );
-		System.out.println( s3b.size() + " - " + s3b );
-		System.out.println( s4.size() + " - " + s4 );
 	}
 	
 	private static void procesa( ArrayList<String> lHtml ) {

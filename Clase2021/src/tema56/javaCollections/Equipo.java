@@ -1,6 +1,6 @@
 package tema56.javaCollections;
 
-public class Equipo {
+public class Equipo implements Comparable<Equipo> {
 	protected String nombre;
 
 	public Equipo(String nombre) {
@@ -33,6 +33,11 @@ public class Equipo {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public int compareTo(Equipo o) {
+		return nombre.compareTo( o.nombre );
 	}
 	
 }

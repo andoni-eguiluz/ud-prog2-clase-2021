@@ -1,0 +1,26 @@
+Árbol de llamadas del ejemplo:
+
+    main ()
+        sacarTiempoEnCiudadesDePrimera ()
+            buscaEnWeb (https://www.marca.com/futbol/primera-division/calendario.html,<img src="https://e00-marca.uecdn.es/assets/sports,iso-8859-15)
+                devuelveTodasLasLineasSinExc (https://www.marca.com/futbol/primera-division/calendario.html,iso-8859-15)
+                <- ArrayList de 7585 líneas
+            <- ArrayList de 760 líneas
+
+            visualizaEquipo (Huesca)
+                getGradosDeCiudad (Huesca)
+                    buscaEnWeb (https://www.eltiempo.es/Huesca.html,data-temp,UTF-8)
+                        devuelveTodasLasLineasSinExc (https://www.eltiempo.es/Huesca.html,UTF-8)
+                        <- ArrayList de 3154 líneas
+                    <- ArrayList de 62 líneas
+                <- 10
+
+            ...
+
+            visualizaEquipo (Espanyol)
+                getGradosDeCiudad (Espanyol)
+                    buscaEnWeb (https://www.eltiempo.es/Espanyol.html,data-temp,UTF-8)
+                        devuelveTodasLasLineasSinExc (https://www.eltiempo.es/Espanyol.html,UTF-8)
+                        <- null
+                    <- ???
+                <- ???
