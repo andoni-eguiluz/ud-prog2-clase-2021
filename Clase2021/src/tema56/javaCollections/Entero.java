@@ -4,6 +4,15 @@ package tema56.javaCollections;
  * @author andoni.eguiluz at ingenieria.deusto.es
  */
 public class Entero {
+	
+	/** Método de prueba de Entero
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		// TODO ¿Podríamos crear sets o mapas de Entero?
+		// Añadir hashCode - equals (hash) o Comparable (tree)
+	}
+	
 	private int valor;
 	/** Crea un nuevo entero mutable
 	 * @param valor	Valor de ese entero

@@ -25,7 +25,7 @@ public class SacaEquiposResuelto {
 	private static TreeSet<Equipo> s4b = new TreeSet<Equipo>();
 	private static HashMap<String,Integer> m5 = new HashMap<>();
 	private static HashMap<String,Entero> m6 = new HashMap<>();
-	private static HashMap<String,ArrayList<String>> m7 = new HashMap<>();
+	private static TreeMap<String,ArrayList<String>> m7 = new TreeMap<>();
 	private static HashMap<String,ArrayList<Partido>> m8 = new HashMap<>();
 
 	private static String primerEquipo = null;  // Usado para ver los pares de equipos
@@ -54,10 +54,10 @@ public class SacaEquiposResuelto {
 		s4b.add( eq );
 		// 5.- Usar un mapa para contar el número de veces que aparece cada equipo (Integer)
 		if (m5.containsKey(equipo)) {  // Ya había aparecido - hay que incrementar el conteo
-			int contAntiguo = m5.get( equipo );
-			m5.put( equipo, contAntiguo + 1 );
+			int contAntiguo = m5.get( equipo ).intValue();
+			m5.put( equipo, new Integer( contAntiguo + 1 ) );
 		} else {  // Primera vez que aparece
-			m5.put( equipo, 1 );
+			m5.put( equipo, new Integer( 1 ) );
 		}
 		// 6.- Usar un mapa para contar el número de veces que aparece cada equipo (Entero MUTABLE)
 		if (m6.containsKey(equipo)) {  // Ya había aparecido - hay que incrementar el conteo
@@ -76,6 +76,16 @@ public class SacaEquiposResuelto {
 			} else {
 				m7.put( primerEquipo, new ArrayList<String>( Arrays.asList( equipo ) ) );
 			}
+			
+			// De otra manera sería así:
+			// ArrayList<String> lPartidos = m7.get(primerEquipo);
+			// if (lPartidos==null) {
+			//	   lPartidos = new ArrayList<String>();
+			//	   m7.put(primerEquipo, lPartidos);
+			// }
+			// lPartidos.add( equipo );
+			// Lo mismo m7.get(primerEquipo).add( equipo );
+			
 			// Añadimos el equipo 1 a la lista del segundo equipo
 			if (m7.containsKey(equipo)) {
 				m7.get( equipo ).add( primerEquipo );
@@ -109,10 +119,10 @@ public class SacaEquiposResuelto {
 	private static void cierre() {
 		System.out.println( l1.size() + " - " + l1 );
 		System.out.println( l2.size() + " - " + l2 );
-		System.out.println( s3.size() + " - " + s3 );
-		System.out.println( s3b.size() + " - " + s3b );
-		System.out.println( s4.size() + " - " + s4 );
-		System.out.println( s4b.size() + " - " + s4 );
+		System.out.println( "S3: " + s3.size() + " - " + s3 );
+		System.out.println( "S3b: " + s3b.size() + " - " + s3b );
+		System.out.println( "S4: " + s4.size() + " - " + s4 );
+		System.out.println( "S4b: " + s4b.size() + " - " + s4 );
 		System.out.println( m5.size() + " - " + m5 );
 		System.out.println( m6.size() + " - " + m6 );
 		// Los mapas 7 y 8 los vamos a sacar por partes:

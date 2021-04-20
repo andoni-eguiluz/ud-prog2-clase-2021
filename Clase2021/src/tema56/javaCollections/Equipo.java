@@ -23,13 +23,13 @@ public class Equipo implements Comparable<Equipo> {
 	
 	@Override
 	public int hashCode() {
-		return nombre.hashCode();
+		return nombre.toUpperCase().hashCode();  // Si quisiéramos comparar con mayúsculas y minúsculas iguales
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Equipo) {
-			return nombre.equals( ((Equipo)obj).nombre );
+			return nombre.toUpperCase().equals( ((Equipo)obj).nombre.toUpperCase() );
 		} else {
 			return false;
 		}
@@ -37,7 +37,7 @@ public class Equipo implements Comparable<Equipo> {
 
 	@Override
 	public int compareTo(Equipo o) {
-		return nombre.compareTo( o.nombre );
+		return -nombre.compareTo( o.nombre );
 	}
 	
 }
