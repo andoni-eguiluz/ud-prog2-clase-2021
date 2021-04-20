@@ -37,7 +37,7 @@ public class Equipo implements Comparable<Equipo> {
 
 	@Override
 	public int compareTo(Equipo o) {
-		return -nombre.compareTo( o.nombre );
+		return -nombre.compareTo( o.nombre );  // Ordena al revés si se cambia el signo
 	}
 	
 }
