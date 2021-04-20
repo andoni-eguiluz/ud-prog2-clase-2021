@@ -122,7 +122,7 @@ public class SacaEquiposResuelto {
 		System.out.println( "S3: " + s3.size() + " - " + s3 );
 		System.out.println( "S3b: " + s3b.size() + " - " + s3b );
 		System.out.println( "S4: " + s4.size() + " - " + s4 );
-		System.out.println( "S4b: " + s4b.size() + " - " + s4 );
+		System.out.println( "S4b: " + s4b.size() + " - " + s4b );
 		System.out.println( m5.size() + " - " + m5 );
 		System.out.println( m6.size() + " - " + m6 );
 		// Los mapas 7 y 8 los vamos a sacar por partes:
