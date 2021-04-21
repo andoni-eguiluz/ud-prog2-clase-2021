@@ -96,6 +96,23 @@ public class GestionDeFechas {
 		
 		// Tanto los longs, como date, como gregorian calendar se pueden comparar:
 		System.out.println( "Comparación de " + gc.getTime() + " y " + gc2.getTime() + ": " + gc.compareTo( gc2 ) );
+		
+		// Se puede asignar también con datos específicos, por ejemplo si nos meten una fecha concreta por teclado o ventana.
+		// Ejemplo de asignación de una fecha concreta:  25/5/2020 10:00
+		// Una manera - con simpledateformat
+		SimpleDateFormat f3 = new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
+		Date fechaConcreta1 = f3.parse( "25/05/2020 10:00" );
+		System.out.println( fechaConcreta1 );
+		// Otra manera - con gregoriancalendar
+		GregorianCalendar gcal = new GregorianCalendar();
+		gcal.set( GregorianCalendar.YEAR, 2020 );
+		gcal.set( GregorianCalendar.MONTH, 4 );  // OJO QUE EL MES EMPIEZA EN 0 (mayo = 4)
+		gcal.set( GregorianCalendar.DAY_OF_MONTH, 25 );
+		gcal.set( GregorianCalendar.HOUR_OF_DAY, 10 );
+		gcal.set( GregorianCalendar.MINUTE, 0 );
+		gcal.set( GregorianCalendar.SECOND, 0 );
+		Date fechaConcreta2 = gcal.getTime();
+		System.out.println( fechaConcreta2 );
 	}
 
 }
