@@ -3,7 +3,6 @@ package utils.ventanas.componentes;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -101,7 +100,9 @@ public class JLabelGrafico extends JLabel {
 		anchuraObjeto = anchura;
 		alturaObjeto = altura;
     	super.setSize( anchura, altura );
-    	setPreferredSize( new Dimension( anchura, altura ));
+		setMinimumSize( new Dimension( anchura, altura ) );
+    	setPreferredSize( new Dimension( anchura, altura ) );
+		setMaximumSize( new Dimension( anchura, altura ) );
 	}
 	
 	/** Cambia la imagen del objeto
@@ -111,19 +112,41 @@ public class JLabelGrafico extends JLabel {
 		File f = new File(nomImagenObjeto);
         URL imgURL = null;
         try {
+        	// Intento 1: desde fichero
         	imgURL = f.toURI().toURL();
-    		if (!f.exists()) {
-    			imgURL = JLabelGrafico.class.getResource( nomImagenObjeto ).toURI().toURL();
-    		}
-        } catch (Exception e) {}  // Cualquier error de carga, la imagen se queda nula
-        if (imgURL == null) {
+			imagenObjeto = ImageIO.read(imgURL);
+System.out.println( "1: " + imgURL );
+        } catch (Exception e) {
+        	// Intento 2: desde paquete (recurso)
+			try {
+	    		imgURL = JLabelGrafico.class.getResource( nomImagenObjeto ).toURI().toURL();
+				imagenObjeto = ImageIO.read(imgURL);
+System.out.println( "2: " + imgURL );
+			} catch (Exception e2) {  
+				// Intento 3: Mirar si está en el paquete de la clase llamadora
+				StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
+				for (int i=1; i<stElements.length; i++) {
+					StackTraceElement ste = stElements[i];
+					if ( !ste.getClassName().endsWith("JLabelGrafico") ) {  // Busca la clase llamadora a JLabelGrafico y busca ahí el recurso
+						try {
+							Class<?> c = Class.forName( ste.getClassName() );
+				    		imgURL = c.getResource( nomImagenObjeto ).toURI().toURL();
+							imagenObjeto = ImageIO.read(imgURL);
+System.out.println( "3: " + imgURL + " " + imagenObjeto.getHeight() );
+							break;
+						} catch (Exception e3) {
+							// Sigue intentando
+						}
+					}
+				}
+			}
+        }  
+        if (imgURL == null || imagenObjeto == null) {  // Con cualquier error de carga, la imagen queda nula
+        	imgURL = null;
         	imagenObjeto = null;
-        } else {
-        	try {  // guarda la imagen para dibujarla de forma escalada después
-    			imagenObjeto = ImageIO.read(imgURL);
-    		} catch (IOException e) {}  // Error al leer la imagen
+System.out.println( "4: " + imgURL );
         }
-        if (imagenObjeto==null) {
+        if (imagenObjeto==null) { // Si es nula, se pone un texto de error con el nombre sobre fondo rojo
 			setOpaque( true );
 			setBackground( Color.red );
 			setForeground( Color.blue );
