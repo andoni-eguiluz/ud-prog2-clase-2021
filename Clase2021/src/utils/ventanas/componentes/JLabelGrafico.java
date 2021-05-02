@@ -115,13 +115,11 @@ public class JLabelGrafico extends JLabel {
         	// Intento 1: desde fichero
         	imgURL = f.toURI().toURL();
 			imagenObjeto = ImageIO.read(imgURL);
-System.out.println( "1: " + imgURL );
         } catch (Exception e) {
         	// Intento 2: desde paquete (recurso)
 			try {
 	    		imgURL = JLabelGrafico.class.getResource( nomImagenObjeto ).toURI().toURL();
 				imagenObjeto = ImageIO.read(imgURL);
-System.out.println( "2: " + imgURL );
 			} catch (Exception e2) {  
 				// Intento 3: Mirar si está en el paquete de la clase llamadora
 				StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
@@ -132,7 +130,6 @@ System.out.println( "2: " + imgURL );
 							Class<?> c = Class.forName( ste.getClassName() );
 				    		imgURL = c.getResource( nomImagenObjeto ).toURI().toURL();
 							imagenObjeto = ImageIO.read(imgURL);
-System.out.println( "3: " + imgURL + " " + imagenObjeto.getHeight() );
 							break;
 						} catch (Exception e3) {
 							// Sigue intentando
@@ -144,7 +141,6 @@ System.out.println( "3: " + imgURL + " " + imagenObjeto.getHeight() );
         if (imgURL == null || imagenObjeto == null) {  // Con cualquier error de carga, la imagen queda nula
         	imgURL = null;
         	imagenObjeto = null;
-System.out.println( "4: " + imgURL );
         }
         if (imagenObjeto==null) { // Si es nula, se pone un texto de error con el nombre sobre fondo rojo
 			setOpaque( true );
