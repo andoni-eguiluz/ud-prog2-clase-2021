@@ -50,7 +50,7 @@ public class EjemploGridLayoutInteractivo extends JFrame {
 		getContentPane().remove( fila*NUM_COLS + col );  // Quita el componente que estuviera en esa posición  (se calcula en índice lineal partiendo de fila/columna)
 		getContentPane().add( grafico, fila*NUM_COLS + col );  // Mete en su lugar el componente (gráfico) nuevo
 		getContentPane().revalidate();  // Reconstruye el panel
-		rotacion += 0.1;  // Para ir rotando un poquito el escudo cada vez
+		rotacion += 0.2;  // Para ir rotando un poquito el escudo cada vez
 	}
 
 }
