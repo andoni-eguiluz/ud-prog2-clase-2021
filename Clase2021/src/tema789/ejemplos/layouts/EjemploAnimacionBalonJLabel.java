@@ -43,7 +43,8 @@ public class EjemploAnimacionBalonJLabel extends JFrame {
 		// Asignar layouts - el layout nulo permite mover libremente sus componentes
 		pFondo.setLayout( null );
 		// Configuración de componentes
-		lBalon.setBounds( 0, 500, 60, 60 );  // Un JLabel gráfico no da mucho "juego", solo posición y tamaño (ver JLabelGraficoAjustado)
+		lBalon.setBounds( 0, 500, 60, 60 );  // ATENCIÓN! Si no se pone bounds el valón no se ve (con layout nulo el contenedor no ajusta a sus componentes)
+		// Un JLabel gráfico no da mucho "juego", solo posición y tamaño (ver JLabelGraficoAjustado)
 		// lBalon.setLocation( 0, 500 );  // Es lo mismo bounds que location + size
 		// lBalon.setSize( 60, 60 );
 		// lBalon.setOpaque( true );  // si quisiéramos que tuviera fondo (normalmente son preferibles imágenes transparentes png)
