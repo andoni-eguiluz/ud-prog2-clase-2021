@@ -1238,9 +1238,9 @@ public class VentanaGrafica {
 	 */
 	public void setEjeYInvertido( boolean invertido ) {
 		if (ejeYInvertido) {  // Estaba creciente hacia abajo (lo habitual en pantalla) y hay que ponerlo hacia arriba
-			v.offsetInicio.y = getAltura();
+			offsetInicio.y = getAltura();
 		} else {  // Estaba creciente hacia arriba (lo habitual en mates) y hay que ponerlo hacia abajo
-			v.offsetInicio.y = 0;
+			offsetInicio.y = 0;
 		}
 		ejeYInvertido = invertido;
 	}
