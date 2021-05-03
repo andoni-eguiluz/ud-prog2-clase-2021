@@ -35,4 +35,8 @@ public class Peli {
 	public void setComentarios(String comentarios) {
 		this.comentarios = comentarios;
 	}
+	@Override
+	public String toString() {
+		return nombre + " (" + ingresos + "$)";
+	}
 }
