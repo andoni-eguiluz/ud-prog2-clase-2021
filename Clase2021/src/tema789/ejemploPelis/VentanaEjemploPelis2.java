@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 
+/** Ejemplo de ventana de pelis trabajado en clase
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 @SuppressWarnings("serial")
 public class VentanaEjemploPelis2 extends JFrame {
 

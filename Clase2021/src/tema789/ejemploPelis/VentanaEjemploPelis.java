@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 
+/** Ejemplo de ventana de pelis preparado para meter eventos
+ * @author andoni.eguiluz at ingenieria.deusto.es
+ */
 @SuppressWarnings("serial")
 public class VentanaEjemploPelis extends JFrame {
 
