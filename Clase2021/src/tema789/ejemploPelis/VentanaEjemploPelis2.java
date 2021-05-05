@@ -26,7 +26,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 		listaPelis.add( new Peli( "Avatar", 2_847_246_203L, "avatar.jpg" ) );
 		listaPelis.add( new Peli( "Avengers: Endgame", 2_797_501_328L, "endgame.jpg" ) );
 		listaPelis.add( new Peli( "Titanic", 2_194_439_542L, "titanic.jpg" ) );
-		listaPelis.add( new Peli( "Star Wars: The Force Awakens", 2_068_223_624L, "avatar.jpg" ) );
+		listaPelis.add( new Peli( "Star Wars: The Force Awakens", 2_068_223_624L, "starwarsTFA.jpg" ) );
 	}
 	
 	// No static 
@@ -34,7 +34,13 @@ public class VentanaEjemploPelis2 extends JFrame {
 	private JComboBox<Peli> cbPelis;
 	private JTextField tfNombrePeli;
 	private JTextField tfIngresosPeli;
-	
+	private JLabel lFoto;
+	private JButton bNueva;
+	private JButton bEditar;
+	private JButton bConfirmar;
+	private JButton bCancelar;
+	private JTextArea taComentarios;
+
 	public VentanaEjemploPelis2() {
 		// Inicialización de la ventana
 		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
@@ -50,18 +56,18 @@ public class VentanaEjemploPelis2 extends JFrame {
 
 		// Crear componentes
 		JLabel lTitulo = new JLabel( "Catálogo de películas" );
-		JButton bNueva = new JButton( "Nueva peli" );
-		JButton bEditar = new JButton( "Editar peli" );
-		JButton bConfirmar = new JButton( "Confirmar" );
-		JButton bCancelar = new JButton( "Cancelar" );
+		bNueva = new JButton( "Nueva peli" );
+		bEditar = new JButton( "Editar peli" );
+		bConfirmar = new JButton( "Confirmar" );
+		bCancelar = new JButton( "Cancelar" );
 		JLabel lPelicula = new JLabel( "Película:" );
 		JLabel lIngresos = new JLabel( "Ingresos brutos:" );
 		tfNombrePeli = new JTextField( 15 );
 		tfIngresosPeli = new JTextField( 8 );
-		JLabel lFoto = new JLabel( "Foto" ); // new JLabel( new ImageIcon( "src/tema789/ejemploPelis/endgame.jpg" ) );
+		lFoto = new JLabel( "Foto" ); // new JLabel( new ImageIcon( "src/tema789/ejemploPelis/endgame.jpg" ) );
 		// JLabelGrafico lFoto = new JLabelGrafico( "endgame.jpg", 600, 400 );  // Foto escalable
-		JTextArea taComentarios = new JTextArea();
-		cbPelis = new JComboBox();
+		taComentarios = new JTextArea();
+		cbPelis = new JComboBox<>();
 		for (Peli peli : listaPelis) {
 			cbPelis.addItem( peli );
 		}
@@ -104,8 +110,81 @@ public class VentanaEjemploPelis2 extends JFrame {
 		// ActionListener escuchadorCombo = new EscuchadorCombo();
 		// cbPelis.addActionListener( escuchadorCombo );
 		// Opción 2 - clase interna
-		ActionListener escuchadorCombo = new EscuchadorComboInterna();
-		cbPelis.addActionListener( escuchadorCombo );
+		// ActionListener escuchadorCombo = new EscuchadorComboInterna();
+		// cbPelis.addActionListener( escuchadorCombo );
+		// Opción 3 - clase interna anónima
+		cbPelis.addActionListener( new ActionListener() {
+			// Atributos
+			public void actionPerformed(ActionEvent e) {
+				// Actualizar nombre, importe, foto y comentarios de la peli seleccionada
+				// Saber cuál es la peli seleccionada
+				System.out.println( "actionPerformed " + e.getSource() );
+				System.out.println( cbPelis.getSelectedItem() );
+				Peli peliSel = (Peli) cbPelis.getSelectedItem();
+				tfNombrePeli.setText( peliSel.getNombre() );
+				tfIngresosPeli.setText( peliSel.getIngresos() + "" );
+				taComentarios.setText( peliSel.getComentarios() );
+				lFoto.setIcon( new ImageIcon( "bin/tema789/ejemploPelis/" + peliSel.getPoster() ) );
+			}
+		} ); 
+		
+		lFoto.addMouseListener( new MouseAdapter() {
+//			Point pInicio;
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//				System.out.println( "Released " + e );
+//				System.out.println( "Drag de " + pInicio + " a " + e.getPoint() );
+//			}
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//				System.out.println( "Pressed " + e );
+//				pInicio = e.getPoint();
+//			}
+//			@Override
+//			public void mouseExited(MouseEvent e) {
+//				System.out.println( "Exited " + e );
+//			}
+//			@Override
+//			public void mouseEntered(MouseEvent e) {
+//				System.out.println( "Entered " + e );
+//			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println( "Clicked " + e );
+			}
+		});
+		
+		lFoto.addMouseMotionListener( new MouseMotionListener() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				System.out.println( "Moved " + e );
+			}
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				System.out.println( "Drag " + e );
+			}
+		});
+		
+		tfNombrePeli.addKeyListener( new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				System.out.println( "Typed " + e );
+			}
+			@Override
+			public void keyReleased(KeyEvent e) {
+				System.out.println( "Released " + e );
+			}
+			@Override
+			public void keyPressed(KeyEvent e) {
+				System.out.println( "Pressed " + e );
+				// Algo a no hacer nunca...  0:-)
+				// while (!released) {
+				// 	// esperar
+				// }
+				// algo
+			}
+		});
+		
 	}
 
 	// 2. Escuchador interno - CLASE INTERNA
