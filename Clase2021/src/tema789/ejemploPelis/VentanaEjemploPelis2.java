@@ -181,15 +181,16 @@ public class VentanaEjemploPelis2 extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				System.out.println( "Pressed " + e );
+				// Y si queremos controlar dos teclas?
 				// Algo a no hacer nunca...  0:-)
 				// while (!released) {
-				// 	// esperar
+				// 	// esperar a segunda tecla
 				// }
-				// algo
-				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {
+				// porque esto "congela" a Swing que ya no puede hacer otra cosa (probarlo y ver cómo la ventana se queda frita)
+				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {  // Si queremos controlar dos teclas no se puede hacer en un evento - hay que memorizar estado
 					ctrlPulsado = true;
 				}
-				if (e.getKeyCode()==KeyEvent.VK_DELETE && ctrlPulsado) {
+				if (e.getKeyCode()==KeyEvent.VK_DELETE && ctrlPulsado) {  // Ejemplo: borrar cuadro de texto con Ctrl+Suprimir
 					System.out.println( "Ctrl+Delete" );
 					tfNombrePeli.setText( "" );
 				}
