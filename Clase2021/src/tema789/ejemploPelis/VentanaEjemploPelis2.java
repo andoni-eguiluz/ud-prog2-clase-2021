@@ -166,6 +166,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 		});
 		
 		tfNombrePeli.addKeyListener( new KeyListener() {
+			boolean ctrlPulsado = false;
 			@Override
 			public void keyTyped(KeyEvent e) {
 				System.out.println( "Typed " + e );
@@ -173,6 +174,9 @@ public class VentanaEjemploPelis2 extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				System.out.println( "Released " + e );
+				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {
+					ctrlPulsado = false;
+				}
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -182,6 +186,13 @@ public class VentanaEjemploPelis2 extends JFrame {
 				// 	// esperar
 				// }
 				// algo
+				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {
+					ctrlPulsado = true;
+				}
+				if (e.getKeyCode()==KeyEvent.VK_DELETE && ctrlPulsado) {
+					System.out.println( "Ctrl+Delete" );
+					tfNombrePeli.setText( "" );
+				}
 			}
 		});
 		
