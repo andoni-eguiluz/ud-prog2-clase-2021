@@ -43,7 +43,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 
 	public VentanaEjemploPelis2() {
 		// Inicialización de la ventana
-		setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE );
 		setSize( 800, 600 );
 		setLocation( 2000, 0 );
 		// this.setLocationRelativeTo( null );
@@ -165,7 +165,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 			}
 		});
 		
-		tfNombrePeli.addKeyListener( new KeyListener() {
+		KeyListener kl = new KeyListener() {
 			boolean ctrlPulsado = false;
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -183,20 +183,125 @@ public class VentanaEjemploPelis2 extends JFrame {
 				System.out.println( "Pressed " + e );
 				// Y si queremos controlar dos teclas?
 				// Algo a no hacer nunca...  0:-)
-				// while (!released) {
-				// 	// esperar a segunda tecla
-				// }
+//				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {
+//					boolean released = false;
+//					while (!released) {
+//						// esperar a segunda tecla
+//						if (e.getKeyCode()==KeyEvent.VK_DELETE) {
+//							//
+//							released = true;
+//						}
+//					}
+//				}
 				// porque esto "congela" a Swing que ya no puede hacer otra cosa (probarlo y ver cómo la ventana se queda frita)
 				if (e.getKeyCode()==KeyEvent.VK_CONTROL) {  // Si queremos controlar dos teclas no se puede hacer en un evento - hay que memorizar estado
 					ctrlPulsado = true;
 				}
 				if (e.getKeyCode()==KeyEvent.VK_DELETE && ctrlPulsado) {  // Ejemplo: borrar cuadro de texto con Ctrl+Suprimir
 					System.out.println( "Ctrl+Delete" );
-					tfNombrePeli.setText( "" );
+					// instanceof si hiciera falta
+					JTextField miTF = (JTextField) e.getSource();
+					miTF.setText( "" );
 				}
+			}
+		};
+		
+		tfNombrePeli.addKeyListener( kl );
+		tfIngresosPeli.addKeyListener( kl );
+		
+		tfIngresosPeli.addKeyListener( new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char car = e.getKeyChar();
+				if (car>='0' && car<='9') {
+					return;
+				}
+				JOptionPane.showMessageDialog( VentanaEjemploPelis2.this, "No se pueden meter letras" );
+				e.consume();
 			}
 		});
 		
+		// Eventos de foco
+		tfNombrePeli.addFocusListener( new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				tfNombrePeli.setBackground( Color.white );
+				System.out.println( "Perdido " + e );
+				// Control de validación
+				if (tfNombrePeli.getText().length()>20) {
+					// Error de validación
+					JOptionPane.showMessageDialog( VentanaEjemploPelis2.this, "Máxima longitud 20" );
+					tfNombrePeli.requestFocus();
+					tfNombrePeli.setSelectionStart( 0 );
+					tfNombrePeli.setSelectionEnd( tfNombrePeli.getText().length() );
+					tfNombrePeli.setForeground( Color.red );
+				} else {
+					tfNombrePeli.setForeground( Color.BLACK );
+				}
+			}
+			@Override
+			public void focusGained(FocusEvent e) {
+				System.out.println( "Ganado " + e );
+				tfNombrePeli.setBackground( Color.yellow );
+			}
+		});
+		
+		// Component listener
+		lFoto.addComponentListener( new ComponentListener() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				System.out.println( "Shown " + e );
+			}
+			@Override
+			public void componentResized(ComponentEvent e) {
+				System.out.println( "Resized " + e );
+			}
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				System.out.println( "Moved " + e );
+			}
+			@Override
+			public void componentHidden(ComponentEvent e) {
+				System.out.println( "Hidden " + e );
+			}
+		});
+		
+		// Window listener (JFrame)
+		addWindowListener( new WindowListener() {
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.err.println( "Icon " + e );
+			}
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				System.err.println( "Deicon " + e );
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+				System.err.println( "Act " + e );
+			}
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				System.err.println( "Desact " + e );
+			}
+			@Override
+			public void windowOpened(WindowEvent e) {
+				System.err.println( "Abrir " + e );
+			}
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.err.println( "Closing " + e );
+				if (tfNombrePeli.getText().length()>0) {
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog( VentanaEjemploPelis2.this, "Para cerrar tienes que tener algo en el nombre de la peli");
+				}
+			}
+			@Override
+			public void windowClosed(WindowEvent e) {
+				System.err.println( "Closed " + e );
+			}
+		});
 	}
 
 	// 2. Escuchador interno - CLASE INTERNA
