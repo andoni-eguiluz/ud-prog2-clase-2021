@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 
 /** Ejemplo de ventana de pelis trabajado en clase
@@ -43,9 +45,9 @@ public class VentanaEjemploPelis2 extends JFrame {
 
 	public VentanaEjemploPelis2() {
 		// Inicialización de la ventana
-		setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE );
+		setDefaultCloseOperation( JFrame.DO_NOTHING_ON_CLOSE ); // JFrame.DISPOSE_ON_CLOSE
 		setSize( 800, 600 );
-		setLocation( 2000, 0 );
+		// setLocation( 2000, 0 );
 		// this.setLocationRelativeTo( null );
 
 		// Crear contenedores
@@ -155,6 +157,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 		});
 		
 		lFoto.addMouseMotionListener( new MouseMotionListener() {
+			private Point pAnterior = null;
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				System.out.println( "Moved " + e );
@@ -162,6 +165,14 @@ public class VentanaEjemploPelis2 extends JFrame {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				System.out.println( "Drag " + e );
+				// Dibujar línea 
+				// espere al sigt drag
+				System.out.println( "Línea desde " + pAnterior + " a " + e.getPoint() );
+				Graphics g = lFoto.getGraphics();
+				if (pAnterior!=null) {
+					g.drawLine( pAnterior.x, pAnterior.y, e.getX(), e.getY() );
+				}
+				pAnterior = e.getPoint();
 			}
 		});
 		
@@ -208,6 +219,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 		
 		tfNombrePeli.addKeyListener( kl );
 		tfIngresosPeli.addKeyListener( kl );
+		// taComentarios.addKeyListener( kl );
 		
 		tfIngresosPeli.addKeyListener( new KeyAdapter() {
 			@Override
@@ -232,7 +244,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 					// Error de validación
 					JOptionPane.showMessageDialog( VentanaEjemploPelis2.this, "Máxima longitud 20" );
 					tfNombrePeli.requestFocus();
-					tfNombrePeli.setSelectionStart( 0 );
+					tfNombrePeli.setSelectionStart( 20 );
 					tfNombrePeli.setSelectionEnd( tfNombrePeli.getText().length() );
 					tfNombrePeli.setForeground( Color.red );
 				} else {
@@ -255,6 +267,7 @@ public class VentanaEjemploPelis2 extends JFrame {
 			@Override
 			public void componentResized(ComponentEvent e) {
 				System.out.println( "Resized " + e );
+				System.out.println( lFoto.getWidth()/2 + ", " + lFoto.getHeight()/2 );
 			}
 			@Override
 			public void componentMoved(ComponentEvent e) {
@@ -302,6 +315,18 @@ public class VentanaEjemploPelis2 extends JFrame {
 				System.err.println( "Closed " + e );
 			}
 		});
+		
+		// Contenido extra: hay otros escuchadores particulares... por ejemplo el cambio de contenido de un cuadro de texto
+		// que modifica la posición del "caret" (barra vertical parpadeante, marcadora del input de teclado) 
+		// Con esta modificación podemos ver cosas como un pegado de texto en bloque (no genera eventos de teclado individuales, 
+		// pero sí se observa un cambio de caret brusco)
+		tfNombrePeli.addCaretListener( new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				System.err.println( "caretListener " + e );
+			}
+		});
+		
 	}
 
 	// 2. Escuchador interno - CLASE INTERNA
