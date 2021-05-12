@@ -1,4 +1,4 @@
-package tema789.ejemploPelis.clasesInternas;
+package tema789.ejemplos.clasesInternas;
 
 /** Prueba del ejemplo de clase interna (ver ClaseExterna.java)
  * @author andoni.eguiluz at deusto.es

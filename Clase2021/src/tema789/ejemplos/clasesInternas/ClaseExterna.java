@@ -1,4 +1,4 @@
-package tema789.ejemploPelis.clasesInternas;
+package tema789.ejemplos.clasesInternas;
 
 import java.util.Random;
 
