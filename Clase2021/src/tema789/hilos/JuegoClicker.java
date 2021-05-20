@@ -22,7 +22,7 @@ public class JuegoClicker {
 	 * @param args	No utilizado
 	 */
 	public static void main(String[] args) {
-		JuegoClicker mgt = new JuegoClicker();
+		JuegoClicker mgt = new JuegoClicker( null );
 		mgt.gameLoop();
 	}
 	
@@ -60,12 +60,27 @@ public class JuegoClicker {
 	
 	// ArrayList<ElementoLabel> listaEltos;   No hace falta porque se guarda en el propio panel - panel.getComponents()
 	
+	private JFrame ventanaLlamadora;
+	
 	/** Crea el gestor de elementos con una ventana gráfica asociada de tamaño {@link #ANCHURA_VENTANA} x {@link #ALTURA_VENTANA}
+	 * @param ventanaAVolver	Ventana que se visibiliza al acabar el juego
 	 */
-	public JuegoClicker() {
+	public JuegoClicker( JFrame ventanaAVolver ) {
+		ventanaLlamadora = ventanaAVolver;
 		ventana = new JFrame( "Clicker Deusto" );
+		ventana.setLocation( 2000, 0 );
 		ventana.setSize( ANCHURA_VENTANA, ALTURA_VENTANA  );
 		ventana.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
+		ventana.addWindowListener( new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				acabar();
+				// Visibiliza la ventana de menú
+				if (ventanaLlamadora!=null) {
+					ventanaLlamadora.setVisible( true );
+				}
+			}
+		});
 	}
 	
 	/** Ejecuta el gestor de tareas, lanzando el proceso de ejecución principal
@@ -86,7 +101,13 @@ public class JuegoClicker {
 			try {
 				Thread.sleep( TIEMPO_POR_FRAME );
 			} catch (InterruptedException e) {}
+			System.out.println( "Game loop " + System.currentTimeMillis() );
 		}
+	}
+	
+	public void acabar() {
+		enJuego = false;
+		ventana.dispose();
 	}
 	
 	// Lógica de añadir nuevo clicker (cada x tiempo)
