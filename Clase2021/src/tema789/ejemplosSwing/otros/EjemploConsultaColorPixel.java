@@ -21,7 +21,7 @@ public class EjemploConsultaColorPixel {
 		}
 		JFrame v = new JFrame();
 		v.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-		JLabel coche = new JLabel( new ImageIcon( EjemploConsultaColorPixel.class.getResource( "/tema3/img/coche.png" ) ) );
+		JLabel coche = new JLabel( new ImageIcon( EjemploConsultaColorPixel.class.getResource( "/tema3/ejemplos/runner/img/nave.png" ) ) );
 		v.add( coche, BorderLayout.CENTER );
 		v.setSize( 600, 400 );
 		coche.addMouseMotionListener( new MouseMotionListener() {
@@ -32,8 +32,8 @@ public class EjemploConsultaColorPixel {
 				Graphics2D g2 = (Graphics2D) v.getContentPane().getGraphics();
 				g2.setColor( c );
 				g2.fillRect( 450, 50, 50, 50 );
-				if (c.equals(fondo)) System.out.println( "Se mueve fuera del coche" );
-				else System.out.println( "Se mueve dentro del coche" );
+				if (c.equals(fondo)) System.out.println( "Se mueve fuera de la imagen" );
+				else System.out.println( "Se mueve dentro de la imagen" );
 			}
 			@Override
 			public void mouseDragged(MouseEvent e) {

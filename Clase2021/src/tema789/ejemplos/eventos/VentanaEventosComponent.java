@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /** Ventana de prueba con algunos elementos básicos con eventos de componente
- * Obsérvese cómo el balón siempre está centrado, gracias a ese evento
+ * Obsérvese cómo la imagen siempre está centrada, gracias a ese evento
  */
 @SuppressWarnings("serial")
 public class VentanaEventosComponent extends JFrame {
@@ -34,7 +34,7 @@ public class VentanaEventosComponent extends JFrame {
 		
 		// Crear componentes
 		taTexto = new JTextArea( "", 5, 40 );
-		lFoto = new JLabel( new ImageIcon( VentanaEventosComponent.class.getResource( "/tema3/img/balon.png") ) ); // Opción 1: recurso (ventaja: se puede empaquetar en un jar)
+		lFoto = new JLabel( new ImageIcon( VentanaEventosComponent.class.getResource( "/tema3/ejemplos/runner/img/asteroid.png") ) ); // Opción 1: recurso (ventaja: se puede empaquetar en un jar)
 		// JLabel lFoto = new JLabel( new ImageIcon("src/tema3/img/balon.png") );  // Opción 2: fichero - solo funciona si existe el fichero en el disco en la ruta correspondiente
 		JButton bBorrar = new JButton( "Borrar texto" );
 		JButton bAceptar = new JButton( "Acabar" );
